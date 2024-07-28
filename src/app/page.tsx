@@ -1,112 +1,107 @@
+"use client";
 import Image from "next/image";
+import SearchIcon from "@mui/icons-material/Search";
+import Carousel from "react-material-ui-carousel";
+import { useQuery } from "@tanstack/react-query";
+interface Product {
+  name: string;
+  description: string;
+  product_image: string;
+  category_id: string;
+  supplier_id: string;
+}
 
 export default function Home() {
+  const { data, isLoading, isError, isSuccess } = useQuery<Product[]>({
+    queryKey: ["test"],
+    queryFn: () =>
+      fetch(process.env.NEXT_PUBLIC_API_DOMAIN + "/products").then((res) =>
+        res.json()
+      ),
+  });
+  console.log(data);
+  if (isLoading) {
+    return (
+      <div>
+        <p>loading....</p>
+      </div>
+    );
+  }
+  var items = [
+    {
+      name: "Random Name #1",
+      description: "Probably the most random thing you have ever seen!",
+      image:
+        "/images/The-Borneo-Post-Sustainable-Palm-Oil-Communities-of-Sabah-and-Sarawak-01.jpg",
+    },
+    {
+      name: "Random Name #2",
+      description: "Hello World!",
+      image:
+        "https://hoselink-neto-images.s3.amazonaws.com/assets/images/palmsmain.jpg",
+    },
+  ];
+  // const data = await getProduct();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="bg-[f5f5f5] flex w-full h-full relative flex-col z-0">
+      <div className="relative h-[550px] w-[100%] flex justify-center bg-blue-500 mt-[105px]">
+        <div className="bg-[#0000007a] w-[100%] absolute h-[100%]"></div>
+        <div className="absolute text-white w-[60%] justify-left top-[11rem] xl:w-[70%] lg:w-[80%] md:w-[90%] sm:w-[91%] xsm:w-[85%] z-10 ">
+          <div>
+            <div className="w-[100%]">
+              <div className="text-[31px] font-[400]">
+                ยินดีต้อนรับ' เข้าสู่ u-palm
+              </div>
+              <div className="text-[14.x] mt-4 text-[#d6d6d6]">
+                มีรถให้เช่ามากกว่า 50 คนทั่วประเทศไทย รับประกันความปลอดภัย
+                เปิดให้บริการมาเเล้วกว่า 5 ปี ถ้าคุณต้องการรถไม่ว่าจะอยู่ที่ไหน
+                นึกถึง Carental
+              </div>
+              {/* search product input*/}
+              <div className="mt-4 flex rounded-md p-[1.5px] gap-1">
+                <input
+                  type="text"
+                  placeholder="ค้นหาสิ่งที่คุณต้อง..."
+                  className="w-[480px] focus:outline-none pl-3 text-[12.5px] h-[40px] rounded-sm border-[1px] border-[#fff] shadow-inner text-[#000]"
+                ></input>
+                <button className="bg-secondary-500  w-[50px] text-[20px] text-[#3e3e3e] hover:bg-secondary-400 transition-all flex items-center justify-center rounded-sm h-[40px]">
+                  <SearchIcon />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
         <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+          src={
+            "/images/The-Borneo-Post-Sustainable-Palm-Oil-Communities-of-Sabah-and-Sarawak-01.jpg"
+          }
+          fill={true}
+          className="object-cover brightness-75"
+          alt={"Palm-Oil"}
+        ></Image>
       </div>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      {/* Hit hot Products */}
+      <div className="flex justify-center w-[100%] mb-5 items-center mt-10">
+        <div className="w-[80%] pb-[1.7rem] flex flex-col gap-4 bg-white pt-3 px-4 shadow-sm sm:w-[90%] xsm:w-[90%]">
+          {/* Title */}
+          <div className="text-primary-400 pb-3 border-b-[1px] border-gray-200 text-sm">
+            สินค้าขายดี
+          </div>
+          <Carousel duration={10} indicators={false} navButtonsAlwaysVisible>
+            {data!.map((item, i) => (
+              // <Item key={i} item={item} />
+              <Image
+                key={i}
+                src={item.product_image}
+                className="mx-auto"
+                width={1000}
+                height={600}
+                alt={""}
+              />
+            ))}
+          </Carousel>
+        </div>
       </div>
     </main>
   );
