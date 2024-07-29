@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Prompt } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import TanStackProvider from "@/providers/TanstackProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+import TanStackProvider from "@/providers/TanstackProvider";
+import StoreProvider from "./StoreProvider";
+
+const prompt = Prompt({
+  subsets: ["thai", "latin"],
+  weight: "100",
+});
 
 export const metadata: Metadata = {
   title: "U Palm shopping",
@@ -18,13 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="th">
-      <body className={inter.className}>
-        <TanStackProvider>
-          <Header />
-          {children}
-          <Footer />
-        </TanStackProvider>
+    <html lang="th" suppressHydrationWarning={true}>
+      <body className={prompt.className}>
+        <StoreProvider>
+          <TanStackProvider>{children}</TanStackProvider>
+        </StoreProvider>
       </body>
     </html>
   );

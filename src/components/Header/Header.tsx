@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useActionState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "@/libs/hook";
+import { logout } from "@/libs/features/auth/authSlice";
 
 const Header: React.FC = () => {
+  const userAuth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const logOut = () => {
+    dispatch(logout());
+  };
   return (
     <div className="flex flex-col w-[100%] fixed top-[0px] z-[10] shadow-md">
       {/* first section */}
@@ -20,22 +27,29 @@ const Header: React.FC = () => {
           </Link>
 
           {/* sign in / up && cart user information */}
-          <div className="flex gap-2 text-primary-500 text-[12.5px] items-center">
-            <Link
-              href={"/"}
-              className="border-[1px] border-[#fff] px-3 hover:text-secondary-500 rounded-md transition-all h-[30px]"
-            >
-              เข้าสู่ระบบ
-            </Link>
-            {/* line between sign & sign up */}
-            <div className="h-[20px] w-[1px] bg-primary-200"></div>
-            <Link
-              href={"/"}
-              className="border-[1px] border-[#fff] px-3 hover:text-secondary-500 rounded-md transition-all h-[30px]"
-            >
-              สมัครสมาชิก
-            </Link>
-          </div>
+          {userAuth.accessToken ? (
+            <div className="flex gap-2 text-primary-500 text-[12.5px] items-center">
+              <button onClick={logOut}>Logout</button>
+              <button>User 1</button>
+            </div>
+          ) : (
+            <div className="flex gap-2 text-primary-500 text-[12.5px] items-center">
+              <Link
+                href={"/login"}
+                className="border-[1px] border-[#fff] px-3 hover:text-secondary-500 rounded-md transition-all h-[30px]"
+              >
+                เข้าสู่ระบบ
+              </Link>
+              {/* line between sign & sign up */}
+              <div className="h-[20px] w-[1px] bg-primary-200"></div>
+              <Link
+                href={"/register"}
+                className="border-[1px] border-[#fff] px-3 hover:text-secondary-500 rounded-md transition-all h-[30px]"
+              >
+                สมัครสมาชิก
+              </Link>
+            </div>
+          )}
         </div>
       </div>
       {/* second section */}
