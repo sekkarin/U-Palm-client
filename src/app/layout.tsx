@@ -3,11 +3,12 @@ import { Prompt } from "next/font/google";
 import "./globals.css";
 
 import TanStackProvider from "@/providers/TanstackProvider";
-import StoreProvider from "./StoreProvider";
+import StoreProvider from "../providers/StoreProvider";
+import { AuthProvider } from "@/contexts/AuthProvider";
 
 const prompt = Prompt({
   subsets: ["thai", "latin"],
-  weight: "100",
+  weight: "500",
 });
 
 export const metadata: Metadata = {
@@ -24,7 +25,9 @@ export default function RootLayout({
     <html lang="th" suppressHydrationWarning={true}>
       <body className={prompt.className}>
         <StoreProvider>
-          <TanStackProvider>{children}</TanStackProvider>
+          <TanStackProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </TanStackProvider>
         </StoreProvider>
       </body>
     </html>

@@ -18,13 +18,13 @@ const useRefreshToken = () => {
         },
         withCredentials: true,
       });
-      // console.log(data);
+      console.log(data);
 
       return data.access_token;
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         dispatch(logout());
-        Cookies.remove("refresh_token");
+        // Cookies.remove("refresh_token");
         // navigate("/session-expired");
       }
       return null;

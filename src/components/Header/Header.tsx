@@ -1,15 +1,35 @@
+"use client";
 import React, { useActionState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/libs/hook";
 import { logout } from "@/libs/features/auth/authSlice";
+import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
+import useRole from "@/libs/hooks/useRole";
+import { Role } from "@/constants/enums/Role";
+import { useAuth } from "@/contexts/AuthProvider";
 
 const Header: React.FC = () => {
-  const userAuth = useAppSelector((state) => state.auth);
+  const { isAuthenticated } = useAuth();
   const dispatch = useAppDispatch();
-  const logOut = () => {
-    dispatch(logout());
+  const axiosAuth = useAxiosAuth();
+
+  const hasUserRole = useRole(Role.ADMIN);
+
+  const logOut = async () => {
+    const { status } = await axiosAuth("/auth/logout");
+    if (status === 200) {
+      dispatch(logout());
+    }
   };
+
+  const adminButton = () =>
+    hasUserRole ? (
+      <>
+        <button>admin</button>
+      </>
+    ) : undefined;
+
   return (
     <div className="flex flex-col w-[100%] fixed top-[0px] z-[10] shadow-md">
       {/* first section */}
@@ -27,8 +47,9 @@ const Header: React.FC = () => {
           </Link>
 
           {/* sign in / up && cart user information */}
-          {userAuth.accessToken ? (
+          {isAuthenticated ? (
             <div className="flex gap-2 text-primary-500 text-[12.5px] items-center">
+              {adminButton()}
               <button onClick={logOut}>Logout</button>
               <button>User 1</button>
             </div>

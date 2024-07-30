@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_DOMAIN,
@@ -6,6 +6,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 5000,
 });
 
 export const axiosPrivate = axios.create({
@@ -14,6 +15,6 @@ export const axiosPrivate = axios.create({
     "Content-Type": "application/json",
   },
   withCredentials: true,
+  timeout: 5000,
 });
-
 export default api;

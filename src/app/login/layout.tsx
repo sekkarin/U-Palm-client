@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import { Prompt } from "next/font/google";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import TanStackProvider from "@/providers/TanstackProvider";
 
 const prompt = Prompt({
   subsets: ["thai", "latin"],
@@ -19,9 +16,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="th">
-      <body className={prompt.className}>{children}</body>
-    </html>
-  );
+  return <>{children}</>;
 }

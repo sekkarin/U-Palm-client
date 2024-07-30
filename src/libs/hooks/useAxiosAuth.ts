@@ -10,7 +10,7 @@ import { setCredential } from "../features/auth/authSlice";
 const useAxiosAuth = () => {
   const refresh = useRefreshToken();
   const dispatch = useAppDispatch();
-  const { accessToken } = useAppSelector((state) => state.auth);
+  const accessToken = useAppSelector((state) => state.auth.accessToken);
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
@@ -43,7 +43,7 @@ const useAxiosAuth = () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [accessToken]);
+  }, [accessToken, dispatch, refresh]);
 
   return axiosPrivate;
 };
