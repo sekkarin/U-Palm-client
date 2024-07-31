@@ -1,11 +1,6 @@
-import Header from "@/components/Header";
+import SkeletonLoader from "@/components/Loading";
 
 export default function Loading() {
   // Or a custom loading skeleton component
-  return (
-    <>
-      <Header />
-      <p>Loading...</p>
-    </>
-  );
+  return <SkeletonLoader />;
 }

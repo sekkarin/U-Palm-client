@@ -3,7 +3,7 @@ import { useAppSelector } from "@/libs/hook";
 import { Role } from "@/constants/enums/Role";
 
 const useRole = (requiredRole: Role | Role[]) => {
-  const roles = useAppSelector((state) => state.roles);
+  const roles = useAppSelector((state) => state.auth.roles);
 
   if (!roles) return false;
 

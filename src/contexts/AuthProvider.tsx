@@ -1,4 +1,3 @@
-// src/contexts/AuthContext.tsx
 "use client";
 import React, {
   createContext,
@@ -26,7 +25,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
-  const auth = useAppSelector((state) => state.auth);
+  const auth = useAppSelector((state) => state?.auth?.accessToken);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -48,12 +47,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
               ...profileResponse.data,
             })
           );
-
-          setIsAuthenticated(true);
         }
+        setIsAuthenticated(true);
       } catch (error) {
-        console.log(error);
-
         dispatch(logout());
         setIsAuthenticated(false);
       } finally {

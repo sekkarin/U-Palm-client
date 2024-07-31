@@ -44,6 +44,8 @@ export default function Login() {
       });
 
       if (status === 200) {
+        console.log(data);
+
         dispatch(
           setCredential({ access_token: data.access_token, ...data.user })
         );
@@ -96,7 +98,12 @@ export default function Login() {
                 )}
               </div>
               <form onSubmit={handleSubmit}>
-                <FormControl fullWidth className="my-2">
+                <FormControl
+                  fullWidth
+                  sx={{
+                    my: 1,
+                  }}
+                >
                   <Input
                     id="email"
                     placeholder="อีเมล์"
@@ -126,13 +133,18 @@ export default function Login() {
                     }
                   />
                 </FormControl>
-                <FormControl fullWidth className="gap-4">
+                <FormControl
+                  fullWidth
+                  sx={{
+                    my: 1,
+                  }}
+                >
                   <button
                     type="submit"
                     disabled={!email || !password}
                     className="bg-primary-500 text-white hover:bg-primary-600 transition-all w-[100%] h-[38px] disabled:bg-gray-200 text-sm font-sm mt-6 rounded-md"
                   >
-                    {isLoading ? "เข้าสู่ระบบ" : "กำลังโหลด..."}
+                    {isLoading ? "กำลังโหลด..." : "เข้าสู่ระบบ"}
                   </button>
                 </FormControl>
               </form>

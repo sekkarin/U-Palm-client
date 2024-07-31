@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProduct } from "@/libs/getProducts";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SkeletonLoader from "@/components/Loading/Loading";
 
 interface Product {
   name: string;
@@ -24,11 +25,7 @@ export default function Home() {
   });
 
   if (isLoading) {
-    return (
-      <div className="h-full">
-        <p>loading....</p>
-      </div>
-    );
+    return <SkeletonLoader />;
   }
   var items = [
     {

@@ -5,6 +5,7 @@ interface UserState {
   accessToken: string | null;
   id: string | null;
   roles: number[] | null;
+  photo: string | null;
 }
 
 const initialState: UserState = {
@@ -12,6 +13,7 @@ const initialState: UserState = {
   accessToken: "",
   id: "",
   roles: [],
+  photo: "",
 };
 
 export const authSlice = createSlice({
@@ -23,11 +25,14 @@ export const authSlice = createSlice({
       state.email = payload.email;
       state.id = payload.user_id;
       state.roles = payload.roles;
+      state.photo = payload.photo;
     },
     logout: (state) => {
       state.accessToken = null;
       state.email = null;
       state.id = null;
+      state.roles = null;
+      state.photo = null;
     },
   },
 });
