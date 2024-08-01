@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/contexts/AuthProvider";
 import type { Metadata } from "next";
 import { Prompt } from "next/font/google";
 
@@ -16,5 +17,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return <AuthProvider>{children}</AuthProvider>;
 }

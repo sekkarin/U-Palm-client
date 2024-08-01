@@ -8,6 +8,23 @@ import { getProduct } from "@/libs/getProducts";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SkeletonLoader from "@/components/Loading/Loading";
+import dynamic from "next/dynamic";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
+import ProductCarousel from "@/components/ProductCarousel";
+
+// Dynamically import the carousel skeleton loader to avoid SSR issues
+const ProductCarouselSkeleton = dynamic(
+  () => import("@/components/Loading/ProductSkeleton"),
+  {
+    ssr: false,
+  }
+);
 
 interface Product {
   name: string;
@@ -24,24 +41,6 @@ export default function Home() {
     refetchInterval: 1000 * 60 * 60 * 5,
   });
 
-  if (isLoading) {
-    return <SkeletonLoader />;
-  }
-  var items = [
-    {
-      name: "Random Name #1",
-      description: "Probably the most random thing you have ever seen!",
-      image:
-        "/images/The-Borneo-Post-Sustainable-Palm-Oil-Communities-of-Sabah-and-Sarawak-01.jpg",
-    },
-    {
-      name: "Random Name #2",
-      description: "Hello World!",
-      image:
-        "https://hoselink-neto-images.s3.amazonaws.com/assets/images/palmsmain.jpg",
-    },
-  ];
-  // const data = await getProduct();
   return (
     <>
       <Header />
@@ -90,19 +89,11 @@ export default function Home() {
             <div className="text-primary-400 pb-3 border-b-[1px] border-gray-200 text-sm">
               สินค้าขายดี
             </div>
-            <Carousel duration={10} navButtonsAlwaysVisible>
-              {data!.map((item, i) => (
-                // <Item key={i} item={item} />
-                <Image
-                  key={i}
-                  src={item.product_image}
-                  className="mx-auto"
-                  width={1000}
-                  height={600}
-                  alt={""}
-                />
-              ))}
-            </Carousel>
+            {isLoading ? (
+              <ProductCarouselSkeleton />
+            ) : (
+              data && <ProductCarousel data={data} />
+            )}
           </div>
         </div>
       </main>

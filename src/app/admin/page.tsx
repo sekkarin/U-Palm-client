@@ -1,22 +1,24 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
-
-import Header from "@/components/Header";
-import { Role } from "@/constants/enums/Role";
-import useRole from "@/libs/hooks/useRole";
-import { redirect } from "next/navigation";
+import React, { useState } from "react";
+import { Box, CssBaseline, Toolbar } from "@mui/material";
+import AdminAppBar from "@/components/Admin/Header";
+import AdminDrawer from "@/components/Admin/Drawer";
+import AdminContent from "@/components/Admin/Content";
 
 export default function Admin() {
-  const isAdmin = useRole(Role.ADMIN);
-  console.log(isAdmin);
-  if (!isAdmin) {
-    redirect("/deny");
-  }
+  const [open, setOpen] = useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
   return (
-    <>
-      <Header />
-      <h1>Admin</h1>
-    </>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AdminAppBar open={open} toggleDrawer={toggleDrawer} />
+      <AdminDrawer open={open} toggleDrawer={toggleDrawer} />
+      <AdminContent>
+        <h1>Hello word</h1>
+      </AdminContent>
+    </Box>
   );
 }

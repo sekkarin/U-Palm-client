@@ -78,9 +78,7 @@ const Header: React.FC = () => {
                   textAlign: "center",
                 }}
               >
-                {isAdmin && (
-                  <Typography sx={{ minWidth: 100 }}>Admin</Typography>
-                )}
+                {isAdmin && <Link href="/admin">Admin</Link>}
 
                 <IconButton>
                   <Badge badgeContent={4} color="primary">
