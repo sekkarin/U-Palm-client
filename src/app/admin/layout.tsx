@@ -17,5 +17,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <AuthProvider>{children}</AuthProvider>;
+  return <>{children}</>;
 }

@@ -10,6 +10,8 @@ import api, { axiosPrivate } from "@/services/api";
 import { useAppDispatch, useAppSelector } from "@/libs/hook";
 import { setCredential, logout } from "@/libs/features/auth/authSlice";
 
+import { useRouter } from "next/navigation";
+
 interface AuthContextType {
   isAuthenticated: boolean;
   loading: boolean;
@@ -26,6 +28,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state?.auth?.accessToken);
+  const router = useRouter();
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -52,6 +55,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       } catch (error) {
         dispatch(logout());
         setIsAuthenticated(false);
+        router.replace("/", { scroll: false });
       } finally {
         setLoading(false);
       }

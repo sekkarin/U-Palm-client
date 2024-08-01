@@ -26,9 +26,10 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 
 const Header: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const phot = useAppSelector((state) => state.auth.photo);
+  const photo = useAppSelector((state) => state.auth.photo);
+  console.log(photo);
 
   const open = Boolean(anchorEl);
   const handleClick = (event: {
@@ -70,7 +71,9 @@ const Header: React.FC = () => {
             </Link>
 
             {/* sign in / up && cart user information */}
-            {isAuthenticated ? (
+            {loading ? (
+              "Loading..."
+            ) : isAuthenticated ? (
               <Box
                 sx={{
                   display: "flex",
@@ -95,9 +98,9 @@ const Header: React.FC = () => {
                     aria-expanded={open ? "true" : undefined}
                   >
                     <Avatar
-                      src={phot ? phot : "U"}
+                      src={photo ? photo : undefined}
                       sx={{ width: 32, height: 32 }}
-                    ></Avatar>
+                    />
                   </IconButton>
                 </Tooltip>
               </Box>

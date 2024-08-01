@@ -55,7 +55,7 @@ const Menus = [
   {
     name: "Overview",
     icon: <LeaderboardIcon />,
-    path: "/admin/overview",
+    path: "/admin",
   },
   {
     name: "Manage Users",
@@ -83,10 +83,11 @@ const AdminDrawer: React.FC<DrawerProps> = ({ open, toggleDrawer }) => {
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "flex-end",
+          justifyContent: "space-between",
           px: [1],
         }}
       >
+        <h1 className="ml-1">Logo</h1>
         <IconButton onClick={toggleDrawer}>
           {theme.direction === "rtl" ? (
             <ChevronRightIcon />
@@ -98,7 +99,12 @@ const AdminDrawer: React.FC<DrawerProps> = ({ open, toggleDrawer }) => {
       <Divider />
       <List component="nav">
         {Menus.map((menu) => (
-          <ListItem key={menu.name} component={Link} href="/admin/overview">
+          <ListItem
+            key={menu.name}
+            component={Link}
+            href={menu.path}
+            className="hover:bg-primary-500 hover:rounded-sm hover:text-white"
+          >
             <ListItemIcon>{menu.icon}</ListItemIcon>
             <ListItemText primary={menu.name} />
           </ListItem>
