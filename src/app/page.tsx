@@ -2,20 +2,11 @@
 "use client";
 import Image from "next/image";
 import SearchIcon from "@mui/icons-material/Search";
-import Carousel from "react-material-ui-carousel";
 import { useQuery } from "@tanstack/react-query";
 import { getProduct } from "@/libs/getProducts";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import SkeletonLoader from "@/components/Loading/Loading";
 import dynamic from "next/dynamic";
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Typography,
-} from "@mui/material";
 import ProductCarousel from "@/components/ProductCarousel";
 
 // Dynamically import the carousel skeleton loader to avoid SSR issues
@@ -35,7 +26,7 @@ interface Product {
 }
 
 export default function Home() {
-  const { data, isLoading, isError, isSuccess } = useQuery<Product[]>({
+  const { data, isLoading } = useQuery<Product[]>({
     queryKey: ["Product-landing-page"],
     queryFn: () => getProduct(),
     refetchInterval: 1000 * 60 * 60 * 5,

@@ -52,7 +52,6 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const AdminAppBar: React.FC<AppBarProps> = ({ open, toggleDrawer }) => {
-  const { isAuthenticated } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const phot = useAppSelector((state) => state.auth.photo);
 
@@ -131,7 +130,10 @@ const AdminAppBar: React.FC<AppBarProps> = ({ open, toggleDrawer }) => {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <Avatar src={phot ? phot : "U"} sx={{ width: 32, height: 32 }} />
+              <Avatar
+                src={phot ? phot : undefined}
+                sx={{ width: 32, height: 32 }}
+              />
             </IconButton>
           </Tooltip>
         </Box>

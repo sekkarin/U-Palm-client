@@ -9,8 +9,8 @@ import { AuthProvider } from "@/contexts/AuthProvider";
 const prompt = Prompt({
   subsets: ["thai", "latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
-  style: ["normal"],
-  display: "auto",
+  // style: ["normal"],
+  // display: "auto",
 });
 
 export const metadata: Metadata = {
