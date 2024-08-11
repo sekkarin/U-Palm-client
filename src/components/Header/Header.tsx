@@ -29,7 +29,7 @@ const Header: React.FC = () => {
   const { isAuthenticated, loading } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const photo = useAppSelector((state) => state.auth.photo);
-  console.log(photo);
+ 
 
   const open = Boolean(anchorEl);
   const handleClick = (event: {
@@ -81,7 +81,7 @@ const Header: React.FC = () => {
                   textAlign: "center",
                 }}
               >
-                {isAdmin && <Link href="/admin">Admin</Link>}
+                {isAdmin && <Link href="/admin/overview">Admin</Link>}
 
                 <IconButton>
                   <Badge badgeContent={4} color="primary">

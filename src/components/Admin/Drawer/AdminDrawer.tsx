@@ -56,7 +56,7 @@ const Menus = [
   {
     name: "Overview",
     icon: <LeaderboardIcon />,
-    path: "/admin",
+    path: "/admin/overview",
   },
   {
     name: "Manage Users",
@@ -77,11 +77,7 @@ const Menus = [
 
 const AdminDrawer: React.FC<DrawerProps> = ({ open, toggleDrawer }) => {
   const theme = useTheme();
-  const pathname = usePathname();
-
-  console.log( pathname.split('/')[2].includes("supplier"));
-  console.log(pathname);
-  
+  const pathname = usePathname();  
   return (
     <Drawer variant="permanent" open={open}>
       <Toolbar
@@ -108,7 +104,7 @@ const AdminDrawer: React.FC<DrawerProps> = ({ open, toggleDrawer }) => {
             key={menu.name}
             component={Link}
             href={menu.path}
-            className={`hover:bg-primary-500 hover:rounded-sm hover:text-white ${
+            className={`hover:bg-primary-200 hover:rounded-sm hover:text-white ${
               pathname.split('/')[2].includes(menu.path.split("/")[2])
                 ? "bg-primary-500 rounded-sm text-white"
                 : ""

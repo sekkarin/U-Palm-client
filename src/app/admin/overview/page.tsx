@@ -14,7 +14,7 @@ import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import api from "@/services/api";
 import Layout from "@/components/Admin/Layout";
 
-export default function Admin() {
+export default function Overview() {
   return (
     <Layout>
       <Typography variant="h1">Overview</Typography>
