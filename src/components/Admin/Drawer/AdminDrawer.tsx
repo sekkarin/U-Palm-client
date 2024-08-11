@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -17,6 +17,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import AddBusinessOutlinedIcon from "@mui/icons-material/AddBusinessOutlined";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import Link from "next/link";
+import { usePathname  } from "next/navigation";
 
 const drawerWidth = 240;
 
@@ -50,6 +51,7 @@ interface DrawerProps {
   open: boolean;
   toggleDrawer: () => void;
 }
+
 const Menus = [
   {
     name: "Overview",
@@ -75,7 +77,11 @@ const Menus = [
 
 const AdminDrawer: React.FC<DrawerProps> = ({ open, toggleDrawer }) => {
   const theme = useTheme();
+  const pathname = usePathname();
 
+  console.log( pathname.split('/')[2].includes("supplier"));
+  console.log(pathname);
+  
   return (
     <Drawer variant="permanent" open={open}>
       <Toolbar
@@ -102,7 +108,11 @@ const AdminDrawer: React.FC<DrawerProps> = ({ open, toggleDrawer }) => {
             key={menu.name}
             component={Link}
             href={menu.path}
-            className="hover:bg-primary-500 hover:rounded-sm hover:text-white"
+            className={`hover:bg-primary-500 hover:rounded-sm hover:text-white ${
+              pathname.split('/')[2].includes(menu.path.split("/")[2])
+                ? "bg-primary-500 rounded-sm text-white"
+                : ""
+            }`}
           >
             <ListItemIcon>{menu.icon}</ListItemIcon>
             <ListItemText primary={menu.name} />

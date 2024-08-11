@@ -100,7 +100,7 @@ export default function Suppliers() {
     };
   };
   const handlerCreateSupplierClick = () => {
-    route.push("./create-supplier");
+    route.push("./suppliers/create-supplier");
   };
 
   const handleDeleteClick = () => {
@@ -208,12 +208,12 @@ export default function Suppliers() {
                           )}
                           className="text-green-500 border-green-500 border-2 hover:bg-primary-200 p-2 rounded my-1"
                         >
-                          <Link href={`./supplier/${row.supplier_id}`}>
+                          <Link href={`./suppliers/${row.supplier_id}`}>
                             รายละเอียด
                           </Link>
                         </MenuItem>
                         <MenuItem className="text-orange-500 border-orange-500 border-2 hover:bg-primary-200 p-2 rounded my-1">
-                          <Link href={`./edit-supplier/${row.supplier_id}`}>
+                          <Link href={`./suppliers/edit-supplier/${row.supplier_id}`}>
                             แก้ใข
                           </Link>
                         </MenuItem>

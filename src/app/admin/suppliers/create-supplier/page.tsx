@@ -164,7 +164,7 @@ export default function CreateSupplier() {
   return (
     <Layout>
       <Breadcrumbs aria-label="breadcrumb">
-        <Link color="inherit" href="./suppliers" className="underline">
+        <Link color="inherit" href="/admin/suppliers" className="underline">
           Supplier
         </Link>
         <Typography color="text.primary">Create Supplier</Typography>
