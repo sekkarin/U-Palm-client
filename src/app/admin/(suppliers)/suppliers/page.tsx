@@ -45,7 +45,6 @@ export default function Suppliers() {
   const route = useRouter();
   const queryClient = useQueryClient();
 
-
   const mutation = useMutation({
     mutationFn: (supplier_id: string) => {
       return axiosAuth.delete("/suppliers/" + supplier_id);
@@ -95,8 +94,8 @@ export default function Suppliers() {
       if (menuItem === "delete") {
         handleDeleteClick();
         setSupplierIdDelete(supplier_id);
-      }else if (menuItem === 'edite') {
-        route.push("./edite-supplier")
+      } else if (menuItem === "edite") {
+        route.push("./edite-supplier");
       }
     };
   };
@@ -209,14 +208,13 @@ export default function Suppliers() {
                           )}
                           className="text-green-500 border-green-500 border-2 hover:bg-primary-200 p-2 rounded my-1"
                         >
-                          รายละเอียด
+                          <Link href={`./supplier/${row.supplier_id}`}>
+                            รายละเอียด
+                          </Link>
                         </MenuItem>
-                        <MenuItem
-                          className="text-orange-500 border-orange-500 border-2 hover:bg-primary-200 p-2 rounded my-1"
-                        >
+                        <MenuItem className="text-orange-500 border-orange-500 border-2 hover:bg-primary-200 p-2 rounded my-1">
                           <Link href={`./edit-supplier/${row.supplier_id}`}>
-
-                          แก้ใข
+                            แก้ใข
                           </Link>
                         </MenuItem>
 
