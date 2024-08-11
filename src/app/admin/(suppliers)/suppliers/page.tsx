@@ -32,6 +32,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
+import Link from "next/link";
 
 export default function Suppliers() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -43,6 +44,7 @@ export default function Suppliers() {
   const axiosAuth = useAxiosAuth();
   const route = useRouter();
   const queryClient = useQueryClient();
+
 
   const mutation = useMutation({
     mutationFn: (supplier_id: string) => {
@@ -93,6 +95,8 @@ export default function Suppliers() {
       if (menuItem === "delete") {
         handleDeleteClick();
         setSupplierIdDelete(supplier_id);
+      }else if (menuItem === 'edite') {
+        route.push("./edite-supplier")
       }
     };
   };
@@ -147,11 +151,11 @@ export default function Suppliers() {
           </Paper>
           <Button
             variant="contained"
-            color="success"
+            className="bg-secondary-500 text-lg"
             size="small"
             onClick={handlerCreateSupplierClick}
           >
-            New
+            เพิ่ม supplier
           </Button>
         </Box>
       </Box>
@@ -208,13 +212,12 @@ export default function Suppliers() {
                           รายละเอียด
                         </MenuItem>
                         <MenuItem
-                          onClick={createHandleMenuClick(
-                            "edite",
-                            row.supplier_id
-                          )}
                           className="text-orange-500 border-orange-500 border-2 hover:bg-primary-200 p-2 rounded my-1"
                         >
+                          <Link href={`./edit-supplier/${row.supplier_id}`}>
+
                           แก้ใข
+                          </Link>
                         </MenuItem>
 
                         <MenuItem

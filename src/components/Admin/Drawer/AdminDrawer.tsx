@@ -11,7 +11,6 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Inbox as InboxIcon, Mail as MailIcon } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
