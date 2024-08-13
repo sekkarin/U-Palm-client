@@ -1,5 +1,5 @@
 "use client";
-import React, {  } from "react";
+import React from "react";
 import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -117,20 +117,16 @@ const Menus = [
                 </ListItemButton>
               </Link>
             </List>
-            <List component="div" disablePadding>
-              <Link href={"/admin/products/categories"}>
-                <ListItemButton sx={{ pl: 4 }}>
-                  <ListItemIcon>
-                    <CategoryIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Category" />
-                </ListItemButton>
-              </Link>
-            </List>
           </Collapse>
         </>
       );
     },
+  },
+  {
+    name: "Manage Categories",
+    icon: <CategoryIcon />,
+    path: "/admin/categories",
+    isCollapse: false,
   },
 ];
 
@@ -181,7 +177,9 @@ const AdminDrawer: React.FC<DrawerProps> = ({ open, toggleDrawer }) => {
               </ListItem>
             )}
 
-            {menu.isCollapse && menu.component && menu?.component({
+            {menu.isCollapse &&
+              menu.component &&
+              menu?.component({
                 handleClick,
                 pathname,
                 openCollapseProduct,

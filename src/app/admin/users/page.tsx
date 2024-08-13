@@ -20,7 +20,7 @@ import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import Paper from "@mui/material/Paper";
 import Link from "next/link";
 import Layout from "@/components/Admin/Layout";
-import { User } from "@/interfaces/user.interface";
+import { IUser } from "@/interfaces/user.interface";
 
 export default function ManageUser() {
   const axiosAuth = useAxiosAuth();
@@ -64,7 +64,7 @@ export default function ManageUser() {
           </TableHead>
           <TableBody>
             {data &&
-              data?.data?.map((row:User) => (
+              data?.data?.map((row:IUser) => (
                 <TableRow
                   key={row.user_id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

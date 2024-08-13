@@ -32,12 +32,12 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
-import { Supplier } from "@/interfaces/supplier.interface";
+import { ICategory } from "@/interfaces/category.interface";
 
-export default function Suppliers() {
+export default function Category() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [supplierIdDelete, setSupplierIdDelete] = useState("");
+  const [categoryIdDelete, setCategoryIdDelete] = useState("");
   const [snackbarMessage, setSnackbarMessage] = useState<string | string[]>("");
   const [isError, setIsError] = useState(false);
 
@@ -47,7 +47,7 @@ export default function Suppliers() {
 
   const mutation = useMutation({
     mutationFn: (supplier_id: string) => {
-      return axiosAuth.delete("/suppliers/" + supplier_id);
+      return axiosAuth.delete("/categories/" + supplier_id);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -56,7 +56,7 @@ export default function Suppliers() {
           setSnackbarMessage(error.response?.data?.message);
         } else {
           setSnackbarMessage(
-            "Failed to delete supplier: " + error.response?.data?.message
+            "Failed to delete category: " + error.response?.data?.message
           );
         }
       } else {
@@ -71,38 +71,36 @@ export default function Suppliers() {
         setIsError(false);
         setOpenSnackbar(true);
         queryClient.invalidateQueries({
-          queryKey: ["get-all-supplier"],
+          queryKey: ["get-all-categories"],
           exact: true,
         });
       }
     },
   });
 
-  const suppliers = useQuery({
-    queryKey: ["get-all-supplier"],
-    queryFn: async () => (await axiosAuth.get("/suppliers")).data,
+  const categories = useQuery({
+    queryKey: ["get-all-categories"],
+    queryFn: async () => (await axiosAuth.get("/categories")).data,
     refetchInterval: 1000 * 60 * 60 * 5,
   });
 
-  const suppliersData = suppliers.data?.data;
+  const categoriesData = categories.data?.data;
 
   const createHandleMenuClick = (
-    menuItem: "edit" | "detail" | "delete",
+    menuItem: "edit" |  "delete",
     supplier_id: string
   ) => {
     return () => {
       if (menuItem === "delete") {
         handleDeleteClick();
-        setSupplierIdDelete(supplier_id);
+        setCategoryIdDelete(supplier_id);
       } else if (menuItem === "edit") {
-        route.push("./suppliers/edit-supplier/" + supplier_id);
-      } else if (menuItem === "detail") {
-        route.push("./suppliers/" + supplier_id);
-      }
+        route.push("./categories/edit-category/" + supplier_id);
+      } 
     };
   };
-  const handlerCreateSupplierClick = () => {
-    route.push("./suppliers/create-supplier");
+  const handlerCreateCategoryClick = () => {
+    route.push("./categories/create-category");
   };
 
   const handleDeleteClick = () => {
@@ -114,21 +112,22 @@ export default function Suppliers() {
   };
 
   const handleConfirmDelete = () => {
-    mutation.mutate(supplierIdDelete);
+    mutation.mutate(categoryIdDelete);
     setIsDialogOpen(false);
   };
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
 
-  if (suppliers.isLoading) {
+  if (categories.isLoading) {
     return <Loading />;
   }
+
   return (
     <Layout>
       <Box display={"flex"} justifyContent={"space-between"} mb={2}>
         <Box>
-          <Typography variant="h3">Supplier</Typography>
+          <Typography variant="h3">Category</Typography>
         </Box>
 
         <Box display={"flex"} gap={2}>
@@ -152,11 +151,11 @@ export default function Suppliers() {
           </Paper>
           <Button
             variant="contained"
-            className="bg-secondary-500 text-lg"
+            className="bg-secondary-500 text-sm"
             size="small"
-            onClick={handlerCreateSupplierClick}
+            onClick={handlerCreateCategoryClick}
           >
-            เพิ่ม supplier
+            เพิ่ม Category
           </Button>
         </Box>
       </Box>
@@ -165,67 +164,45 @@ export default function Suppliers() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead className="bg-primary-400 ">
             <TableRow>
-              <TableCell
-                sx={{
-                  width: 70,
-                }}
-                align="left"
-              >
-                Name
-              </TableCell>
-              <TableCell align="left">Email</TableCell>
-              <TableCell align="left">Country</TableCell>
-              <TableCell align="left">address</TableCell>
-              <TableCell align="left">CreateAt</TableCell>
-              <TableCell align="left">Acton</TableCell>
+              <TableCell align="left">Name</TableCell>
+              <TableCell align="left">Parent category</TableCell>
+              <TableCell align="left">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {suppliersData &&
-              suppliersData.map((row: Supplier) => (
+            {categoriesData &&
+              categoriesData.map((row: ICategory) => (
                 <TableRow
-                  key={row.supplier_id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  className="hover:bg-primary-100"
+                  key={row.categoryId}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                  }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {row.category_name}
                   </TableCell>
-                  <TableCell align="left">{row.email}</TableCell>
-                  <TableCell align="left">{row.country}</TableCell>
-                  <TableCell align="left">{row.address}</TableCell>
                   <TableCell align="left">
-                    {new Date(row.createdAt).toUTCString()}
+                    {row.parent_category_id ? row.parent_category_id : "ไม่มี"}
                   </TableCell>
                   <TableCell align="left">
                     <Dropdown>
                       <MenuButton className="flex bg-primary-500 rounded-sm p-2 text-white hover:bg-primary-300">
                         Action <ArrowDropDownIcon />
                       </MenuButton>
-                      <Menu className="bg-white  text-center p-2">
-                        <MenuItem
-                          onClick={createHandleMenuClick(
-                            "detail",
-                            row.supplier_id
-                          )}
-                          className="text-green-500 border-green-500 border-2 hover:bg-primary-200 p-2 rounded my-1 cursor-pointer"
-                        >
-                          รายละเอียด
-                        </MenuItem>
+                      <Menu className="bg-white text-center p-2">
                         <MenuItem
                           onClick={createHandleMenuClick(
                             "edit",
-                            row.supplier_id
+                            row.categoryId
                           )}
                           className="text-orange-500 border-orange-500 border-2 hover:bg-primary-200 p-2 rounded my-1 cursor-pointer"
                         >
                           แก้ใข
                         </MenuItem>
-
                         <MenuItem
                           onClick={createHandleMenuClick(
                             "delete",
-                            row.supplier_id
+                            row.categoryId
                           )}
                           className="bg-red-400 text-white border-red-500 border-2 hover:bg-primary-200 p-2 rounded my-1 cursor-pointer"
                         >
@@ -242,7 +219,7 @@ export default function Suppliers() {
               <TablePagination
                 rowsPerPageOptions={[1, 50]}
                 component={"div"}
-                count={suppliersData.length}
+                count={categoriesData.length}
                 page={0}
                 onPageChange={() => {
                   console.log("Page changed");

@@ -19,7 +19,7 @@ export default function CreateSupplier() {
   const [profileImage, setProfileImage] = useState<File | null>(null);
 
   const [formValues, setFormValues] = useState({
-    name: "",
+    category_name: "",
     email: "",
     telephone: "",
     country: "",
@@ -50,7 +50,7 @@ export default function CreateSupplier() {
   const resetForm = () => {
     setProfileImage(null);
     setFormValues({
-      name: "",
+      category_name: "",
       email: "",
       telephone: "",
       country: "",
