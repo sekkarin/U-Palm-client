@@ -1,6 +1,7 @@
 "use client";
 import Layout from "@/components/Admin/Layout";
 import { Loading } from "@/components/Loading";
+import SnackbarAlert from "@/components/SnackbarAlert";
 import { Supplier } from "@/interfaces/supplier.interface";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import {
@@ -10,8 +11,6 @@ import {
   TextField,
   Typography,
   Divider,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -330,22 +329,12 @@ export default function EditSupplier({ params }: { params: { id: string } }) {
           </Button>
         </Box>
       </Box>
-
-      <Snackbar
+      <SnackbarAlert
         open={snackbarState.open}
-        autoHideDuration={6000}
-        anchorOrigin={{ horizontal: "right", vertical: "top" }}
-        onClose={handleCloseSnackbar}
-        sx={{ mt: 5 }}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbarState.isError ? "error" : "success"}
-          sx={{ width: "100%" }}
-        >
-          {snackbarState.message}
-        </Alert>
-      </Snackbar>
+        handleCloseSnackbar={handleCloseSnackbar}
+        isError={snackbarState.isError}
+        message={snackbarState.message}
+      />
     </Layout>
   );
 }
