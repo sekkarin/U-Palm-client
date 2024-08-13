@@ -32,7 +32,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
-import { Supplier } from "@/interfaces/Supplier";
+import { Supplier } from "@/interfaces/supplier.interface";
 
 export default function Suppliers() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

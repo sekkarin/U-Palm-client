@@ -1,9 +1,5 @@
 import api from "@/services/api";
 import { AxiosError } from "axios";
-// import { useAppDispatch } from "../app/hooks";
-// import { logout } from "../features/auth/authSlice";
-// import api from "";
-import Cookies from "js-cookie";
 import { useAppDispatch } from "../hook";
 import { logout } from "../features/auth/authSlice";
 

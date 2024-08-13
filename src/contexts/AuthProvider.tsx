@@ -53,6 +53,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         }
         setIsAuthenticated(true);
       } catch (error) {
+        console.log(error);
+        
         dispatch(logout());
         setIsAuthenticated(false);
         router.replace("/", { scroll: false });
@@ -62,7 +64,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     };
 
     checkAuthStatus();
-  }, [auth, dispatch]);
+  }, [auth, dispatch, router]);
 
   const login = (accessToken: string) => {
     api

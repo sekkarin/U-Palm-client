@@ -20,6 +20,7 @@ import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import Paper from "@mui/material/Paper";
 import Link from "next/link";
 import Layout from "@/components/Admin/Layout";
+import { User } from "@/interfaces/user.interface";
 
 export default function ManageUser() {
   const axiosAuth = useAxiosAuth();
@@ -38,7 +39,8 @@ export default function ManageUser() {
   const handlerViewUser = (user_id: string) => {
     router.push("./users/" + user_id);
   };
-
+    console.log(data);
+    
   return (
     <Layout>
       <Breadcrumbs aria-label="breadcrumb">
@@ -62,7 +64,7 @@ export default function ManageUser() {
           </TableHead>
           <TableBody>
             {data &&
-              data.data.map((row: any) => (
+              data?.data?.map((row:User) => (
                 <TableRow
                   key={row.user_id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

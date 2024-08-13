@@ -33,7 +33,7 @@ import { useRouter } from "next/navigation";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
 import Link from "next/link";
-import { Supplier } from "@/interfaces/Supplier";
+import { Supplier } from "@/interfaces/supplier.interface";
 
 export default function Products() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

@@ -6,7 +6,6 @@ import {
   FormControl,
   Input,
   InputAdornment,
-  Snackbar,
 } from "@mui/material";
 import Link from "next/link";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -17,8 +16,6 @@ import Header from "@/components/Header";
 import api from "@/services/api";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
-import { useAppDispatch } from "@/libs/hook";
-import { setCredential } from "@/libs/features/auth/authSlice";
 import Alert from "@mui/material/Alert";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 

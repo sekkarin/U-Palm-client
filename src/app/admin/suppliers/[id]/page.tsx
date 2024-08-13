@@ -2,7 +2,7 @@
 import React from "react";
 import Layout from "@/components/Admin/Layout";
 import { Loading } from "@/components/Loading";
-import { Supplier } from "@/interfaces/Supplier";
+import { Supplier } from "@/interfaces/supplier.interface";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { Box, Breadcrumbs, Typography, Divider, Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";

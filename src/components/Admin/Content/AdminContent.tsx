@@ -1,9 +1,6 @@
 import React from "react";
 import {
   Container,
-  Grid,
-  Paper,
-  Typography,
   Box,
   Toolbar,
 } from "@mui/material";
