@@ -61,11 +61,11 @@ export default function CreateSupplier() {
     setContactTelephone1("");
     setContactAddress1("");
     setContactRemark1("");
-    setContactPerson2(null);
-    setContactEmail2(null);
-    setContactTelephone2(null);
-    setContactAddress2(null);
-    setContactRemark2(null);
+    setContactPerson2("");
+    setContactEmail2("");
+    setContactTelephone2("");
+    setContactAddress2("");
+    setContactRemark2("");
   };
 
   const mutation = useMutation({
@@ -170,7 +170,7 @@ export default function CreateSupplier() {
         <Typography color="text.primary">Create Supplier</Typography>
       </Breadcrumbs>
       <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-        {/* Supplier infomation */}
+        {/* Supplier information */}
         <Typography variant="h6" gutterBottom>
           Supplier Information
         </Typography>
@@ -286,7 +286,7 @@ export default function CreateSupplier() {
             required
           />
         </Box>
-        {/* End supplier infomation */}
+        {/* End supplier information */}
         {/* contact person 1 */}
         <Typography variant="h6" mt={1} gutterBottom>
           Contact Person 1

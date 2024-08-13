@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, {  } from "react";
 import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -15,9 +15,14 @@ import { useTheme } from "@mui/material/styles";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import AddBusinessOutlinedIcon from "@mui/icons-material/AddBusinessOutlined";
+import NextWeekIcon from "@mui/icons-material/NextWeek";
+import CategoryIcon from "@mui/icons-material/Category";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import Link from "next/link";
-import { usePathname  } from "next/navigation";
+import { usePathname } from "next/navigation";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import { Collapse, ListItemButton } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -57,27 +62,86 @@ const Menus = [
     name: "Overview",
     icon: <LeaderboardIcon />,
     path: "/admin/overview",
+    isCollapse: false,
   },
   {
     name: "Manage Users",
     icon: <ManageAccountsIcon />,
     path: "/admin/users",
+    isCollapse: false,
   },
   {
     name: "Manage Suppliers",
     icon: <AddBusinessOutlinedIcon />,
     path: "/admin/suppliers",
+    isCollapse: false,
   },
   {
-    name: "Manage Products",
-    icon: <InventoryIcon />,
-    path: "/admin/products",
+    name: "products",
+    icon: "",
+    path: "",
+    isCollapse: true,
+    component: ({
+      handleClick,
+      pathname,
+      openCollapseProduct,
+    }: {
+      handleClick: () => void;
+      pathname: string;
+      openCollapseProduct: boolean;
+    }) => {
+      return (
+        <>
+          <ListItemButton
+            onClick={handleClick}
+            className={`hover:bg-primary-200 hover:rounded-sm hover:text-white ${
+              pathname.split("/")[2].includes("products")
+                ? "bg-primary-500 rounded-sm text-white"
+                : ""
+            }`}
+          >
+            <ListItemIcon>
+              <InventoryIcon />
+            </ListItemIcon>
+            <ListItemText primary="Manage Products" />
+            {openCollapseProduct ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={openCollapseProduct} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <Link href={"/admin/products"}>
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemIcon>
+                    <NextWeekIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Products" />
+                </ListItemButton>
+              </Link>
+            </List>
+            <List component="div" disablePadding>
+              <Link href={"/admin/products/categories"}>
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemIcon>
+                    <CategoryIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Category" />
+                </ListItemButton>
+              </Link>
+            </List>
+          </Collapse>
+        </>
+      );
+    },
   },
 ];
 
 const AdminDrawer: React.FC<DrawerProps> = ({ open, toggleDrawer }) => {
+  const [openCollapseProduct, setOpenCollapseProduct] = React.useState(false);
+
+  const handleClick = () => {
+    setOpenCollapseProduct(!openCollapseProduct);
+  };
   const theme = useTheme();
-  const pathname = usePathname();  
+  const pathname = usePathname();
   return (
     <Drawer variant="permanent" open={open}>
       <Toolbar
@@ -100,19 +164,29 @@ const AdminDrawer: React.FC<DrawerProps> = ({ open, toggleDrawer }) => {
       <Divider />
       <List component="nav">
         {Menus.map((menu) => (
-          <ListItem
-            key={menu.name}
-            component={Link}
-            href={menu.path}
-            className={`hover:bg-primary-200 hover:rounded-sm hover:text-white ${
-              pathname.split('/')[2].includes(menu.path.split("/")[2])
-                ? "bg-primary-500 rounded-sm text-white"
-                : ""
-            }`}
-          >
-            <ListItemIcon>{menu.icon}</ListItemIcon>
-            <ListItemText primary={menu.name} />
-          </ListItem>
+          <>
+            {!menu.isCollapse && (
+              <ListItem
+                key={menu.name}
+                component={Link}
+                href={menu.path}
+                className={`hover:bg-primary-200 hover:rounded-sm hover:text-white ${
+                  pathname.split("/")[2].includes(menu.path.split("/")[2])
+                    ? "bg-primary-500 rounded-sm text-white"
+                    : ""
+                }`}
+              >
+                <ListItemIcon>{menu.icon}</ListItemIcon>
+                <ListItemText primary={menu.name} />
+              </ListItem>
+            )}
+
+            {menu.isCollapse && menu.component && menu?.component({
+                handleClick,
+                pathname,
+                openCollapseProduct,
+              })}
+          </>
         ))}
       </List>
     </Drawer>

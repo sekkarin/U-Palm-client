@@ -41,6 +41,7 @@ const Header: React.FC = () => {
   const axiosAuth = useAxiosAuth();
 
   const isAdmin = useRole(Role.ADMIN);
+ 
 
   const logOut = async () => {
     const { status } = await axiosAuth("/auth/logout");

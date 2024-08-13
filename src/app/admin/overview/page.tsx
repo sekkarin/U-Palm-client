@@ -1,17 +1,6 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { Box, CssBaseline, Grid, Toolbar, Typography } from "@mui/material";
-import AdminAppBar from "@/components/Admin/Header";
-import AdminDrawer from "@/components/Admin/Drawer";
-import AdminContent from "@/components/Admin/Content";
-import useRole from "@/libs/hooks/useRole";
-import { Role } from "@/constants/enums/Role";
-import { useAuth } from "@/contexts/AuthProvider";
-import { useRouter } from "next/navigation";
-import { Loading } from "@/components/Loading";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
-import api from "@/services/api";
+"use client"
+import React from "react";
+import { Grid, Typography } from "@mui/material";
 import Layout from "@/components/Admin/Layout";
 
 export default function Overview() {

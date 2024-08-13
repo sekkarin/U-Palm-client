@@ -33,6 +33,7 @@ import { useRouter } from "next/navigation";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
 import Link from "next/link";
+import { Supplier } from "@/interfaces/Supplier";
 
 export default function Products() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -180,7 +181,7 @@ export default function Products() {
           </TableHead>
           <TableBody>
             {suppliersData &&
-              suppliersData.map((row: any) => (
+              suppliersData.map((row:Supplier) => (
                 <TableRow
                   key={row.supplier_id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

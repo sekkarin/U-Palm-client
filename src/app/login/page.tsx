@@ -7,7 +7,6 @@ import {
   FormControl,
   Input,
   InputAdornment,
-  InputBase,
 } from "@mui/material";
 import Link from "next/link";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";

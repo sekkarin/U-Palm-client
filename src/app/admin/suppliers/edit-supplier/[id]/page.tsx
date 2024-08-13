@@ -18,7 +18,7 @@ import { AxiosError } from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-export default function EditeSupplier({ params }: { params: { id: string } }) {
+export default function EditSupplier({ params }: { params: { id: string } }) {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -184,12 +184,12 @@ export default function EditeSupplier({ params }: { params: { id: string } }) {
         <Link color="inherit" href="/admin/suppliers" className="underline">
           Supplier
         </Link>
-        <Typography color="text.primary">Edite Supplier</Typography>
+        <Typography color="text.primary">Edit Supplier</Typography>
       </Breadcrumbs>
       <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
         {/* Supplier infomation */}
         <Typography variant="h6" gutterBottom>
-          Edite Supplier Information
+          Edit Supplier Information
         </Typography>
         <Divider
           sx={{
