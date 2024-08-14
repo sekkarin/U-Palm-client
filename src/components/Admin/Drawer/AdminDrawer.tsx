@@ -131,7 +131,7 @@ const Menus = [
 ];
 
 const AdminDrawer: React.FC<DrawerProps> = ({ open, toggleDrawer }) => {
-  const [openCollapseProduct, setOpenCollapseProduct] = React.useState(false);
+  const [openCollapseProduct, setOpenCollapseProduct] = React.useState(true);
 
   const handleClick = () => {
     setOpenCollapseProduct(!openCollapseProduct);

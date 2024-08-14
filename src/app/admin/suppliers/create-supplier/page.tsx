@@ -183,7 +183,7 @@ export default function CreateSupplier() {
         {[
           {
             label: "Commercial Name (Company/Juristic)",
-            value: formValues.name,
+            value: formValues.category_name,
             field: "name" as keyof typeof formValues,
           },
           {

@@ -88,20 +88,20 @@ export default function Products() {
   const suppliersData = suppliers.data?.data;
 
   const createHandleMenuClick = (
-    menuItem: "edite" | "detail" | "delete",
+    menuItem: "edit" | "detail" | "delete",
     supplier_id: string
   ) => {
     return () => {
       if (menuItem === "delete") {
         handleDeleteClick();
         setSupplierIdDelete(supplier_id);
-      } else if (menuItem === "edite") {
-        route.push("./edite-supplier");
+      } else if (menuItem === "edit") {
+        route.push("./edit-supplier");
       }
     };
   };
   const handlerCreateSupplierClick = () => {
-    route.push("./suppliers/create-supplier");
+    route.push("./products/create-product");
   };
 
   const handleDeleteClick = () => {
