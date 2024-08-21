@@ -2,7 +2,7 @@
 import React from "react";
 import Layout from "@/components/Admin/Layout";
 import { Loading } from "@/components/Loading";
-import { Supplier } from "@/interfaces/supplier.interface";
+import { ISupplier } from "@/interfaces/supplier.interface";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { Box, Breadcrumbs, Typography, Divider, Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
@@ -16,7 +16,7 @@ export default function DetailSupplier({ params }: { params: { id: string } }) {
     data: supplier,
     isLoading,
     isError,
-  } = useQuery<Supplier>({
+  } = useQuery<ISupplier>({
     queryKey: ["get-supplier", params.id],
     queryFn: async () => (await axiosAuth.get(`/suppliers/${params.id}`)).data,
   });

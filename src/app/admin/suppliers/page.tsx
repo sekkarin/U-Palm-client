@@ -32,7 +32,8 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
-import { Supplier } from "@/interfaces/supplier.interface";
+import { ISupplier } from "@/interfaces/supplier.interface";
+import Link from "next/link";
 
 export default function Suppliers() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -91,6 +92,8 @@ export default function Suppliers() {
     supplier_id: string
   ) => {
     return () => {
+      console.log(supplier_id);
+
       if (menuItem === "delete") {
         handleDeleteClick();
         setSupplierIdDelete(supplier_id);
@@ -182,7 +185,7 @@ export default function Suppliers() {
           </TableHead>
           <TableBody>
             {suppliersData &&
-              suppliersData.map((row: Supplier) => (
+              suppliersData.map((row: ISupplier) => (
                 <TableRow
                   key={row.supplier_id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -212,14 +215,15 @@ export default function Suppliers() {
                         >
                           รายละเอียด
                         </MenuItem>
-                        <MenuItem
-                          onClick={createHandleMenuClick(
-                            "edit",
-                            row.supplier_id
-                          )}
-                          className="text-orange-500 border-orange-500 border-2 hover:bg-primary-200 p-2 rounded my-1 cursor-pointer"
-                        >
-                          แก้ใข
+                        <MenuItem className="text-orange-500 border-orange-500 border-2 hover:bg-primary-200 p-2 rounded my-1 cursor-pointer">
+                          <Link
+                            href={{
+                              pathname: "/edit-supplier/",
+                              query: { id: row.supplier_id },
+                            }}
+                          >
+                            แก้ใข
+                          </Link>
                         </MenuItem>
 
                         <MenuItem

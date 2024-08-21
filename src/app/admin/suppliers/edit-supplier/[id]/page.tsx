@@ -2,7 +2,7 @@
 import Layout from "@/components/Admin/Layout";
 import { Loading } from "@/components/Loading";
 import SnackbarAlert from "@/components/SnackbarAlert";
-import { Supplier } from "@/interfaces/supplier.interface";
+import { ISupplier } from "@/interfaces/supplier.interface";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import {
   Box,
@@ -48,7 +48,7 @@ export default function EditSupplier({ params }: { params: { id: string } }) {
   const queryClient = useQueryClient();
   const axiosAuth = useAxiosAuth();
 
-  const initialForm = (supplier: Supplier) => {
+  const initialForm = (supplier: ISupplier) => {
     setProfileImage(null);
     setFormValues({
       name: supplier.name,
@@ -103,7 +103,7 @@ export default function EditSupplier({ params }: { params: { id: string } }) {
     },
   });
 
-  const supplierQuery = useQuery<Supplier>({
+  const supplierQuery = useQuery<ISupplier>({
     queryKey: ["get-supplier", params.id],
     queryFn: async () => (await axiosAuth.get(`/suppliers/${params.id}`)).data,
   });

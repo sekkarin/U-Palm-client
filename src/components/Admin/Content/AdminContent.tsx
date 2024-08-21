@@ -22,7 +22,7 @@ const AdminContent: React.FC<{ children: React.ReactNode }> = ({
       }}
     >
       <Toolbar />
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Container maxWidth="lg"  sx={{ mt: 4, mb: 4 }}>
         {children}
       </Container>
     </Box>
