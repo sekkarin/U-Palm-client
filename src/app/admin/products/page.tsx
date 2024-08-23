@@ -29,7 +29,6 @@ import { Dropdown } from "@mui/base/Dropdown";
 import { MenuButton } from "@mui/base/MenuButton";
 import { Menu } from "@mui/base/Menu";
 import { MenuItem } from "@mui/base/MenuItem";
-import { useRouter } from "next/navigation";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
 import Link from "next/link";
@@ -41,17 +40,16 @@ import Image from "next/image";
 export default function Products() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [supplierIdDelete, setSupplierIdDelete] = useState("");
+  const [productIdDelete, setProductIdDeleteIdDelete] = useState("");
   const [snackbarMessage, setSnackbarMessage] = useState<string | string[]>("");
   const [isError, setIsError] = useState(false);
 
   const axiosAuth = useAxiosAuth();
-  const route = useRouter();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (supplier_id: string) => {
-      return axiosAuth.delete("/suppliers/" + supplier_id);
+      return axiosAuth.delete("/products/" + supplier_id);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -60,7 +58,7 @@ export default function Products() {
           setSnackbarMessage(error.response?.data?.message);
         } else {
           setSnackbarMessage(
-            "Failed to delete supplier: " + error.response?.data?.message
+            "Failed to delete product: " + error.response?.data?.message
           );
         }
       } else {
@@ -71,11 +69,11 @@ export default function Products() {
     },
     onSuccess(data) {
       if (data.status === 200) {
-        setSnackbarMessage("Supplier deleted successfully!");
+        setSnackbarMessage("Products deleted successfully!");
         setIsError(false);
         setOpenSnackbar(true);
         queryClient.invalidateQueries({
-          queryKey: ["get-all-supplier"],
+          queryKey: ["get-all-products"],
           exact: true,
         });
       }
@@ -87,7 +85,7 @@ export default function Products() {
     queryFn: async () => (await axiosAuth.get("/products")).data,
     refetchInterval: 1000 * 60 * 60 * 5,
   });
-  console.log(productsQuery.data);
+
 
   const products = productsQuery.data;
 
@@ -100,7 +98,7 @@ export default function Products() {
   };
 
   const handleConfirmDelete = () => {
-    mutation.mutate(supplierIdDelete);
+    mutation.mutate(productIdDelete);
     setIsDialogOpen(false);
   };
   const handleCloseSnackbar = () => {
@@ -251,20 +249,13 @@ export default function Products() {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead className="bg-primary-400">
               <TableRow>
-                <TableCell
-                  sx={{
-                    width: 70,
-                  }}
-                  align="left"
-                >
-                  PRODUCT
-                </TableCell>
+                <TableCell align="left">PRODUCT</TableCell>
                 <TableCell align="left">CATEGORY</TableCell>
                 <TableCell align="left">STOCK</TableCell>
-                <TableCell align="left">SKU</TableCell>
+
                 <TableCell align="left">PRICE</TableCell>
                 <TableCell align="left">QTY</TableCell>
-                <TableCell align="left">ACTIONS</TableCell>
+                <TableCell align="right">ACTIONS</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -294,12 +285,19 @@ export default function Products() {
                     <TableCell align="left">
                       {row.category_id.category_name}
                     </TableCell>
-                    <TableCell align="left">{row.name}</TableCell>
-                    <TableCell align="left">{row.name}</TableCell>
-                    <TableCell align="left">{row.name}</TableCell>
+                    <TableCell align="left">
+                      {row.items.reduce(
+                        (preValue, currValue) =>
+                          preValue + parseFloat(currValue.qty_in_stock),
+                        0
+                      )}
+                    </TableCell>
+                    <TableCell align="left">
+                      {row.items.map((item) => item.selling_price)}
+                    </TableCell>
                     <TableCell align="left">{row.name}</TableCell>
 
-                    <TableCell align="left">
+                    <TableCell align="right">
                       <Dropdown>
                         <MenuButton className="hover:bg-primary-100 hover:rounded-full ">
                           <MoreVertIcon />
@@ -310,24 +308,25 @@ export default function Products() {
                               href={`./products/${row.product_id}`}
                               className="p-2 w-5 h-6"
                             >
-                              รายละเอียด
+                              View
                             </Link>
                           </MenuItem>
                           <MenuItem className=" hover:bg-neutral-100  my-2">
                             <Link
-                              href={`./products/${row.product_id}`}
+                              href={`./products/edit/${row.product_id}`}
                               className="p-2 w-5 h-6"
                             >
-                              รายละเอียด
+                              Edit
                             </Link>
                           </MenuItem>
-                          <MenuItem className=" hover:bg-neutral-100  my-2">
-                            <Link
-                              href={`./products/${row.product_id}`}
-                              className="p-2 w-5 h-6"
-                            >
-                              รายละเอียด
-                            </Link>
+                          <MenuItem
+                            className=" hover:bg-neutral-100  my-2"
+                            onClick={() => {
+                              setProductIdDeleteIdDelete(row.product_id);
+                              handleDeleteClick();
+                            }}
+                          >
+                            Delete
                           </MenuItem>
                         </Menu>
                       </Dropdown>

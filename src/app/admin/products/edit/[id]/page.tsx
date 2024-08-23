@@ -45,9 +45,8 @@ interface CategoriesResponse {
   data: ICategory[]; // Adjust based on the actual structure of the API response
 }
 
-
 // TODO: delete file selected
-export default function CreateProduct() {
+export default function EditProduct({ params }: { params: { id: string } }) {
   const [imageBannerAdverting, setImageBannerAdverting] = useState<File | null>(
     null
   );
@@ -87,34 +86,10 @@ export default function CreateProduct() {
 
   const axiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
-  const route = useRouter();
-  const resetForm = () => {
-    setImageBannerAdverting(null);
-    setProductImages(null);
-    setSelectedSupplier(null);
-    setSelectedCategory(null);
-    setImageProductsReview([]);
-    setImageBannerAdvertingReview("");
-    setFormValues({
-      name: "",
-      description: "",
-      supplier_id: "",
-      category_id: "",
-    });
-    setItems([{
-      base_price: "",
-      discount: "",
-      shipping: "",
-      profit: "",
-      qty_discount: "",
-      qty_in_stock: "",
-      variations: [{ name: "", value: "" }],
-    }]);
-  };
 
   const mutation = useMutation({
     mutationFn: async (formData: FormData) => {
-      return await axiosAuth.post<IProduct>("/products", formData, {
+      return await axiosAuth.put<IProduct>(`/products/${params.id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -135,18 +110,13 @@ export default function CreateProduct() {
         isError: true,
       });
     },
-    onSuccess(data) {
+    onSuccess() {
       setSnackbarState({
         open: true,
         message: "Create product successfully!",
         isError: false,
       });
-      queryClient.invalidateQueries({ queryKey: ["get-all-supplier"] });
-      resetForm();
-      setTimeout(() => {
-        // navigate
-        route.push("./" + data.data.product_id);
-      }, 500);
+      queryClient.invalidateQueries({ queryKey: ["get-all-products"] });
     },
   });
   const suppliersQuery = useQuery<SuppliersResponse>({
@@ -159,6 +129,19 @@ export default function CreateProduct() {
     queryFn: async () => (await axiosAuth.get("/categories")).data,
     refetchInterval: 1000 * 60 * 60 * 5,
   });
+  const productQuery = useQuery<IProduct>({
+    queryKey: ["get-product", params.id],
+    queryFn: async () => (await axiosAuth.get(`/products/${params.id}`)).data,
+  });
+  const initialForm = (productQuery: IProduct) => {
+    setFormValues({
+      name: productQuery.name,
+      description: productQuery.description,
+      supplier_id: productQuery.supplier_id.supplier_id,
+      category_id: productQuery.category_id.categoryId,
+    });
+    setItems([...productQuery.items]);
+  };
 
   const handleFileChangeProductImages = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -426,6 +409,9 @@ export default function CreateProduct() {
           };
         })
       );
+      if (productQuery.isSuccess && productQuery.data) {
+        initialForm(productQuery.data);
+      }
     }
   }, [
     categoriesQuery.data,
@@ -437,18 +423,24 @@ export default function CreateProduct() {
     inputSupplierValue,
     inputCategoryValue,
     fetchCategories,
+    productQuery.data,
+    productQuery.isSuccess,
   ]);
-  if (suppliersQuery.isLoading || categoriesQuery.isLoading) {
+  if (
+    suppliersQuery.isLoading ||
+    categoriesQuery.isLoading ||
+    productQuery.isLoading
+  ) {
     return <Loading />;
   }
-
+ 
   return (
     <Layout>
       <Breadcrumbs aria-label="breadcrumb">
         <Link color="inherit" href="/admin/products" className="underline">
           Product
         </Link>
-        <Typography color="text.primary">Create Product</Typography>
+        <Typography color="text.primary">Edit Product</Typography>
       </Breadcrumbs>
       <form onSubmit={handleSubmit}>
         <Box
@@ -457,7 +449,7 @@ export default function CreateProduct() {
           alignItems={"center"}
           mt={2}
         >
-          <Typography variant="h5">Add a new product</Typography>
+          <Typography variant="h5">Edit a product</Typography>
           <Box display={"flex"} gap={1}>
             <Button variant="outlined" color="inherit">
               Discard
