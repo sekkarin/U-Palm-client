@@ -24,7 +24,6 @@ const SupplierCarousel: React.FC<SupplierCarouselProps> = ({ data }) => {
 
   const itemsPerSlide = isLargeScreen ? 4 : isMediumScreen ? 3 : 1;
 
- 
   // Divide data into chunks based on the current screen size
   const chunkedData = [];
   for (let i = 0; i < data.length; i += itemsPerSlide) {
@@ -38,34 +37,35 @@ const SupplierCarousel: React.FC<SupplierCarouselProps> = ({ data }) => {
           key={index}
           sx={{ display: "flex", justifyContent: "center", gap: 2 }}
         >
-          {chunk.map((item, i) => {
-            const replaceEmpty = item.name.replace(" ", "-");
+          {chunk.map((item, i) => (
+            <Link href={`./products/${item.supplier_id}`} key={i}>
+              <Card
+                key={i}
+                sx={{ maxWidth: 450, margin: "0 auto", width: 250 }}
+              >
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={item.profileImage}
+                    alt={item.name}
+                    className="rounded-lg"
+                  />
 
-            return (
-              <Link href={`./products/${replaceEmpty}`} key={i}>
-                <Card
-                  key={i}
-                  sx={{ maxWidth: 450, margin: "0 auto", width: 250 }}
-                >
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      image={item.profileImage}
-                      alt={item.name}
-                      className="rounded-lg"
-                    />
-
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div" className="truncate">
-                        {item.name}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Link>
-            );
-          })}
+                  <CardContent>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                      className="truncate"
+                    >
+                      {item.name}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Link>
+          ))}
         </Box>
       ))}
     </Carousel>

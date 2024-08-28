@@ -1,9 +1,8 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 import Image from "next/image";
 import SearchIcon from "@mui/icons-material/Search";
 import { useQuery } from "@tanstack/react-query";
-import { getProduct, getSupplier } from "@/libs/getProducts";
+import {  getProducts, getSupplier } from "@/libs/getProducts";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import dynamic from "next/dynamic";
@@ -25,7 +24,7 @@ const ProductCarouselSkeleton = dynamic(
 export default function Home() {
   const productsQuery = useQuery<IProduct[]>({
     queryKey: ["Product-landing-page"],
-    queryFn: () => getProduct(),
+    queryFn: () => getProducts(),
     refetchInterval: 1000 * 60 * 60 * 5,
   });
   const suppliersQuery = useQuery<ISupplier[]>({
@@ -33,11 +32,11 @@ export default function Home() {
     queryFn: () => getSupplier(),
     refetchInterval: 1000 * 60 * 60 * 5,
   });
-  
+
   if (productsQuery.isLoading || suppliersQuery.isLoading) {
     return <Loading />;
   }
- 
+
   return (
     <>
       <Header />
@@ -99,11 +98,19 @@ export default function Home() {
         {/* Banner  */}
         <Box>
           {/* <Image/> */}
-          <p>Image</p>
+          <Image
+            src={"/images/Converted_Banner_Palm_Seed_Product.png"}
+            alt="Converted_Banner_Palm_Seed_Product"
+            width={1900}
+            height={200}
+            className="mx-auto w-[90%] my-2"
+          />
         </Box>
         {/*End Banner  */}
         {/* Suppliers */}
-        {productsQuery.data && <SupplierCarousel data={suppliersQuery?.data} />}
+        {suppliersQuery.data && (
+          <SupplierCarousel data={suppliersQuery?.data} />
+        )}
         {/*End Suppliers */}
       </main>
       <Footer />

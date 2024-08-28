@@ -29,6 +29,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ data }) => {
   for (let i = 0; i < data.length; i += itemsPerSlide) {
     chunkedData.push(data.slice(i, i + itemsPerSlide));
   }
+  
 
   return (
     <Carousel duration={10} navButtonsAlwaysVisible>
@@ -37,66 +38,53 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ data }) => {
           key={index}
           sx={{ display: "flex", justifyContent: "center", gap: 2 }}
         >
-          {chunk.map((item, i) => {
-            const replaceEmpty = item.name.replace(" ", "-");
+          {chunk.map((item, i) => (
+            <Link href={`./products/${item.product_id}`} key={i}>
+              <Card
+                key={i}
+                sx={{ maxWidth: 345, margin: "0 auto", width: 250 }}
+              >
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={item.product_image[0]}
+                    alt={item.name}
+                    className="rounded-lg"
+                  />
 
-            return (
-              <Link href={`./products/${replaceEmpty}`} key={i}>
-                <Card
-                  key={i}
-                  sx={{
-                    maxWidth: 450,
-                    margin: "0 auto",
-                    width: 250,
-                  }}
-                >
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      image={item.product_image[0]}
-                      alt={item.name}
-                      className="rounded-lg"
-                    />
-
-                    <CardContent>
-                      <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                        className="truncate"
-                      >
-                        {item.name}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Stock{" "}
-                        {item.items?.reduce(
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {item.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Stock{" "}
+                      {item.items?.reduce(
+                        (previous, current) =>
+                          previous + parseFloat(current.qty_in_stock),
+                        0
+                      )}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      ราคา{" "}
+                      {item.items &&
+                        item.items?.reduce(
                           (previous, current) =>
-                            previous + parseFloat(current.qty_in_stock),
-                          0
+                            Math.min(
+                              previous,
+                              parseFloat(current?.selling_price as string)
+                            ),
+                          parseFloat(item.items[0].selling_price as string)
                         )}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        ราคา{" "}
-                        {item.items &&
-                          item.items?.reduce(
-                            (previous, current) =>
-                              Math.min(
-                                previous,
-                                parseFloat(current?.selling_price as string)
-                              ),
-                            parseFloat(item.items[0].selling_price as string)
-                          )}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {item.supplier_id.name}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Link>
-            );
-          })}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {item.supplier_id.name}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Link>
+          ))}
         </Box>
       ))}
     </Carousel>
