@@ -3,11 +3,16 @@
 import Image from "next/image";
 import SearchIcon from "@mui/icons-material/Search";
 import { useQuery } from "@tanstack/react-query";
-import { getProduct } from "@/libs/getProducts";
+import { getProduct, getSupplier } from "@/libs/getProducts";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import dynamic from "next/dynamic";
 import ProductCarousel from "@/components/ProductCarousel";
+import { IProduct } from "@/interfaces/product.interface";
+import { Box } from "@mui/material";
+import { Loading } from "@/components/Loading";
+import SupplierCarousel from "@/components/SupplierCarousel";
+import { ISupplier } from "@/interfaces/supplier.interface";
 
 // Dynamically import the carousel skeleton loader to avoid SSR issues
 const ProductCarouselSkeleton = dynamic(
@@ -17,21 +22,22 @@ const ProductCarouselSkeleton = dynamic(
   }
 );
 
-interface Product {
-  name: string;
-  description: string;
-  product_image: string;
-  category_id: string;
-  supplier_id: string;
-}
-
 export default function Home() {
-  const { data, isLoading } = useQuery<Product[]>({
+  const productsQuery = useQuery<IProduct[]>({
     queryKey: ["Product-landing-page"],
     queryFn: () => getProduct(),
     refetchInterval: 1000 * 60 * 60 * 5,
   });
-
+  const suppliersQuery = useQuery<ISupplier[]>({
+    queryKey: ["Suppliers-landing-page"],
+    queryFn: () => getSupplier(),
+    refetchInterval: 1000 * 60 * 60 * 5,
+  });
+  
+  if (productsQuery.isLoading || suppliersQuery.isLoading) {
+    return <Loading />;
+  }
+ 
   return (
     <>
       <Header />
@@ -74,19 +80,31 @@ export default function Home() {
         </div>
 
         {/* Hit hot Products */}
-        <div className="flex justify-center w-[100%] mb-5 items-center mt-10">
+        <Box className="flex justify-center w-[100%] mb-5 items-center mt-10">
           <div className="w-[80%] pb-[1.7rem] flex flex-col gap-4 bg-white pt-3 px-4 shadow-sm sm:w-[90%] xsm:w-[90%]">
             {/* Title */}
             <div className="text-primary-400 pb-3 border-b-[1px] border-gray-200 text-sm">
               สินค้าขายดี
             </div>
-            {isLoading ? (
+            {productsQuery.isLoading ? (
               <ProductCarouselSkeleton />
             ) : (
-              data && <ProductCarousel data={data} />
+              productsQuery.data && (
+                <ProductCarousel data={productsQuery.data} />
+              )
             )}
           </div>
-        </div>
+        </Box>
+
+        {/* Banner  */}
+        <Box>
+          {/* <Image/> */}
+          <p>Image</p>
+        </Box>
+        {/*End Banner  */}
+        {/* Suppliers */}
+        {productsQuery.data && <SupplierCarousel data={suppliersQuery?.data} />}
+        {/*End Suppliers */}
       </main>
       <Footer />
     </>

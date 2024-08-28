@@ -1,5 +1,3 @@
-// components/ProductCarousel.tsx
-
 import React from "react";
 import Carousel from "react-material-ui-carousel";
 import {
@@ -11,17 +9,12 @@ import {
   Box,
   useMediaQuery,
   useTheme,
-  Divider,
 } from "@mui/material";
-
-interface Product {
-  product_image: string;
-  name: string;
-  description: string;
-}
+import { IProduct } from "@/interfaces/product.interface";
+import Link from "next/link";
 
 interface ProductCarouselProps {
-  data: Product[];
+  data: IProduct[];
 }
 
 const ProductCarousel: React.FC<ProductCarouselProps> = ({ data }) => {
@@ -44,27 +37,66 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ data }) => {
           key={index}
           sx={{ display: "flex", justifyContent: "center", gap: 2 }}
         >
-          {chunk.map((item, i) => (
-            <Card key={i} sx={{ maxWidth: 345, margin: "0 auto", width: 250 }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={item.product_image}
-                  alt={item.name}
-                />
-                <Divider />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {item.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {item.description}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          ))}
+          {chunk.map((item, i) => {
+            const replaceEmpty = item.name.replace(" ", "-");
+
+            return (
+              <Link href={`./products/${replaceEmpty}`} key={i}>
+                <Card
+                  key={i}
+                  sx={{
+                    maxWidth: 450,
+                    margin: "0 auto",
+                    width: 250,
+                  }}
+                >
+                  <CardActionArea>
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={item.product_image[0]}
+                      alt={item.name}
+                      className="rounded-lg"
+                    />
+
+                    <CardContent>
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="div"
+                        className="truncate"
+                      >
+                        {item.name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Stock{" "}
+                        {item.items?.reduce(
+                          (previous, current) =>
+                            previous + parseFloat(current.qty_in_stock),
+                          0
+                        )}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        ราคา{" "}
+                        {item.items &&
+                          item.items?.reduce(
+                            (previous, current) =>
+                              Math.min(
+                                previous,
+                                parseFloat(current?.selling_price as string)
+                              ),
+                            parseFloat(item.items[0].selling_price as string)
+                          )}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {item.supplier_id.name}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Link>
+            );
+          })}
         </Box>
       ))}
     </Carousel>

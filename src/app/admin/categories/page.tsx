@@ -155,7 +155,7 @@ export default function Category() {
             size="small"
             onClick={handlerCreateCategoryClick}
           >
-            เพิ่ม Category
+            Add Category
           </Button>
         </Box>
       </Box>

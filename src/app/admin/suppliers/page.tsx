@@ -159,7 +159,7 @@ export default function Suppliers() {
             size="small"
             onClick={handlerCreateSupplierClick}
           >
-            เพิ่ม supplier
+            Add Supplier
           </Button>
         </Box>
       </Box>

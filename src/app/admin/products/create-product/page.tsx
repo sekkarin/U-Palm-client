@@ -135,7 +135,7 @@ export default function CreateProduct() {
         isError: true,
       });
     },
-    onSuccess(data) {
+    onSuccess() {
       setSnackbarState({
         open: true,
         message: "Create product successfully!",
@@ -143,10 +143,6 @@ export default function CreateProduct() {
       });
       queryClient.invalidateQueries({ queryKey: ["get-all-supplier"] });
       resetForm();
-      setTimeout(() => {
-        // navigate
-        route.push("./" + data.data.product_id);
-      }, 500);
     },
   });
   const suppliersQuery = useQuery<SuppliersResponse>({
@@ -393,6 +389,7 @@ export default function CreateProduct() {
         qty_discount: "",
         qty_in_stock: "",
         variations: [{ name: "", value: "" }],
+       
       },
     ]);
   };

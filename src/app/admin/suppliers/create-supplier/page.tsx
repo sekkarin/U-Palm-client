@@ -19,7 +19,7 @@ export default function CreateSupplier() {
   const [profileImage, setProfileImage] = useState<File | null>(null);
 
   const [formValues, setFormValues] = useState({
-    category_name: "",
+    name: "",
     email: "",
     telephone: "",
     country: "",
@@ -50,7 +50,7 @@ export default function CreateSupplier() {
   const resetForm = () => {
     setProfileImage(null);
     setFormValues({
-      category_name: "",
+      name: "",
       email: "",
       telephone: "",
       country: "",
@@ -183,7 +183,7 @@ export default function CreateSupplier() {
         {[
           {
             label: "Commercial Name (Company/Juristic)",
-            value: formValues.category_name,
+            value: formValues.name,
             field: "name" as keyof typeof formValues,
           },
           {

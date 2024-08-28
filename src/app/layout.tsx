@@ -5,6 +5,8 @@ import "./globals.css";
 import TanStackProvider from "@/providers/TanstackProvider";
 import StoreProvider from "../providers/StoreProvider";
 import { AuthProvider } from "@/contexts/AuthProvider";
+import theme from "@/theme";
+import { ThemeProvider } from "@mui/material";
 
 const prompt = Prompt({
   subsets: ["thai", "latin"],
@@ -28,7 +30,9 @@ export default function RootLayout({
       <body className={prompt.className}>
         <StoreProvider>
           <TanStackProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <ThemeProvider theme={theme}>
+              <AuthProvider>{children}</AuthProvider>
+            </ThemeProvider>
           </TanStackProvider>
         </StoreProvider>
       </body>
