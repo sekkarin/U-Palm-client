@@ -3,18 +3,21 @@ import { ISupplier } from "./supplier.interface";
 export type ProductVariant = {
   name: string;
   value: string;
+  variation_id:string
 };
+
 export interface Item {
+  product_item_id:string;
   base_price: string;
   discount: string;
   shipping: string;
   profit: string;
   qty_discount: string;
   qty_in_stock: string;
-  selling_price? : string | undefined;
+  selling_price? : string ;
   variations: ProductVariant[];
-  [key: string]: string | ProductVariant[]; // Index signature allowing any string key
-};
+  [key: string]: string | ProductVariant[] | undefined;
+}
 
 export interface IProduct {
   name: string;
