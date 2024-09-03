@@ -28,7 +28,7 @@ const Header: React.FC = () => {
   const { isAuthenticated, loading } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const photo = useAppSelector((state) => state.auth.photo);
- 
+  const cart = useAppSelector((state) => state.cart);
 
   const open = Boolean(anchorEl);
   const handleClick = (event: {
@@ -40,7 +40,6 @@ const Header: React.FC = () => {
   const axiosAuth = useAxiosAuth();
 
   const isAdmin = useRole(Role.ADMIN);
- 
 
   const logOut = async () => {
     const { status } = await axiosAuth("/auth/logout");
@@ -83,11 +82,16 @@ const Header: React.FC = () => {
               >
                 {isAdmin && <Link href="/admin/overview">Admin</Link>}
 
-                <IconButton>
-                  <Badge badgeContent={4} color="primary">
-                    <ShoppingCartOutlinedIcon />
-                  </Badge>
-                </IconButton>
+                <Link href={"../cart"}>
+                  <IconButton>
+                    <Badge
+                      badgeContent={cart.items ? cart.items.length : 0}
+                      color="primary"
+                    >
+                      <ShoppingCartOutlinedIcon />
+                    </Badge>
+                  </IconButton>
+                </Link>
                 <Tooltip title="Account settings">
                   <IconButton
                     onClick={handleClick}

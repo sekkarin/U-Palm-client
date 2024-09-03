@@ -79,8 +79,12 @@ export default function CreateProduct() {
       profit: "",
       qty_discount: "",
       qty_in_stock: "",
-      variations: [{ name: "", value: "" }],
+      variations: [{
+        name: "", value: "",
+        variation_id: undefined
+      }],
       product_item_id: "",
+      selling_price: undefined
     },
   ]);
 
@@ -108,8 +112,12 @@ export default function CreateProduct() {
         profit: "",
         qty_discount: "",
         qty_in_stock: "",
-        variations: [{ name: "", value: "" }],
+        variations: [{
+          name: "", value: "",
+          variation_id: undefined
+        }],
         product_item_id: "",
+        selling_price: undefined
       },
     ]);
   };
@@ -375,7 +383,10 @@ export default function CreateProduct() {
   // Add a new variant to a specific item
   const handleAddVariant = (itemIndex: number) => {
     const newItems = [...items];
-    newItems[itemIndex].variations.push({ name: "", value: "" });
+    newItems[itemIndex].variations.push({
+      name: "", value: "",
+      variation_id: undefined
+    });
     setItems(newItems);
   };
 
@@ -390,8 +401,12 @@ export default function CreateProduct() {
         profit: "",
         qty_discount: "",
         qty_in_stock: "",
-        variations: [{ name: "", value: "" }],
+        variations: [{
+          name: "", value: "",
+          variation_id: undefined
+        }],
         product_item_id: "",
+        selling_price: undefined
       },
     ]);
   };

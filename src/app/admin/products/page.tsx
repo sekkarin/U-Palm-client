@@ -40,7 +40,9 @@ import Image from "next/image";
 export default function Products() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [productIdDelete, setProductIdDeleteIdDelete] = useState("");
+  const [productIdDelete, setProductIdDeleteIdDelete] = useState<
+    string | undefined
+  >("");
   const [snackbarMessage, setSnackbarMessage] = useState<string | string[]>("");
   const [isError, setIsError] = useState(false);
 
@@ -86,7 +88,6 @@ export default function Products() {
     refetchInterval: 1000 * 60 * 60 * 5,
   });
 
-
   const products = productsQuery.data;
 
   const handleDeleteClick = () => {
@@ -98,7 +99,9 @@ export default function Products() {
   };
 
   const handleConfirmDelete = () => {
-    mutation.mutate(productIdDelete);
+    if (productIdDelete) {
+      mutation.mutate(productIdDelete);
+    }
     setIsDialogOpen(false);
   };
   const handleCloseSnackbar = () => {
@@ -322,7 +325,7 @@ export default function Products() {
                           <MenuItem
                             className=" hover:bg-neutral-100  my-2"
                             onClick={() => {
-                              setProductIdDeleteIdDelete(row.product_id);
+                              setProductIdDeleteIdDelete(row?.product_id);
                               handleDeleteClick();
                             }}
                           >

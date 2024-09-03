@@ -8,11 +8,10 @@ import { AuthProvider } from "@/contexts/AuthProvider";
 import theme from "@/theme";
 import { ThemeProvider } from "@mui/material";
 
+
 const prompt = Prompt({
   subsets: ["thai", "latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
-  // style: ["normal"],
-  // display: "auto",
 });
 
 export const metadata: Metadata = {
@@ -25,6 +24,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="th" suppressHydrationWarning={true}>
       <head>

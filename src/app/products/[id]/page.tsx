@@ -26,6 +26,8 @@ import Carousel from "react-material-ui-carousel";
 import DOMPurify from "dompurify";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import { useAppDispatch } from "@/libs/hook";
+import { addCart } from "@/libs/features/cart/cartSclice";
 
 export default function ProductDetail({ params }: { params: { id: string } }) {
   const [open, setOpen] = useState(false);
@@ -36,7 +38,33 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
   const [selectedOption, setSelectedOption] = useState<{
     variation_id: string;
     value: string;
+    item_id: string;
   } | null>(null);
+
+  const dispatch = useAppDispatch();
+
+  const handleAddToCart = () => {
+    if (!selectedOption?.item_id || !selectedOption.variation_id || !quantity) {
+      return;
+    }
+    console.log(selectedOption?.item_id,selectedOption.variation_id,quantity,params.id);
+    
+    dispatch(
+      addCart({
+        product_item_id: selectedOption?.item_id,
+        qty: quantity,
+        productItems: [
+          {
+            item: selectedOption?.item_id,
+            variant_id: selectedOption?.variation_id,
+          },
+        ],
+      })
+    );
+    setQuantity(1);
+    setPreviousQuantity(1);
+    setSelectedOption(null);
+  };
 
   const [product, setProduct] = useState<IProduct>();
   const productQuery = useQuery<IProduct>({
@@ -49,9 +77,6 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     setSelectedImage(image);
     setOpen(true);
   };
-  const handleOpenCart = () => {
-    setOpenCart(true);
-  };
 
   const handleCloseCart = () => {
     setOpenCart(false);
@@ -63,11 +88,16 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
   const increaseQuantity = () => setQuantity((prev) => (prev ? prev + 1 : 0));
   const decreaseQuantity = () =>
     setQuantity((prev) => (prev ?? 0 > 1 ? prev ?? 0 - 1 : 1));
-  const handleOptionSelect = (id: string | undefined, value: string) => {
+  const handleOptionSelect = (
+    id: string | undefined,
+    item_id: string,
+    value: string
+  ) => {
     if (id) {
       setSelectedOption({
         variation_id: id,
         value: value,
+        item_id,
       });
     }
   };
@@ -149,7 +179,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                     </Carousel>
                   </Grid>
                   <Grid item sm={12} md={5} className="w-64 h-full">
-                    <Typography variant="body1">{product?.name}</Typography>
+                    <Typography variant="h5">{product?.name}</Typography>
                     <Typography variant="body2">
                       ราคา{" "}
                       {product &&
@@ -242,6 +272,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                             onClick={() =>
                               handleOptionSelect(
                                 variation?.variation_id,
+                                item.product_item_id,
                                 variation.value
                               )
                             }
@@ -308,7 +339,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                     </Box>
                     <Button
                       variant="contained"
-                      onClick={handleOpenCart}
+                      onClick={handleAddToCart}
                       fullWidth
                     >
                       เพิ่มในตะกร้า

@@ -3,7 +3,7 @@ import { ISupplier } from "./supplier.interface";
 export interface ProductVariant {
   name: string;
   value: string;
-  variation_id?:string
+  variation_id:string | undefined
 }
 
 export interface Item {
@@ -14,7 +14,7 @@ export interface Item {
   profit: string;
   qty_discount: string;
   qty_in_stock: string;
-  selling_price? : string ;
+  selling_price : string | undefined ;
   variations: ProductVariant[];
   [key: string]: string | ProductVariant[] | undefined;
 }
@@ -28,5 +28,5 @@ export interface IProduct {
   supplier_id: ISupplier; // Nested interface for supplier
   items: Item[];
   createdAt: string;
-  product_id?: string;
+  product_id: string | undefined;
 }

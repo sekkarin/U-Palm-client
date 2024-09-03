@@ -43,6 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
             },
             withCredentials: true,
           });
+          // const cartResponse = await axiosPrivate.get()
 
           dispatch(
             setCredential({
