@@ -32,7 +32,7 @@ import { ISupplier } from "@/interfaces/supplier.interface";
 import { ICategory } from "@/interfaces/category.interface";
 
 import { IProduct, Item } from "@/interfaces/product.interface";
-import { useRouter } from "next/navigation";
+
 
 interface Option {
   label: string;
@@ -81,6 +81,7 @@ export default function EditProduct({ params }: { params: { id: string } }) {
       qty_discount: "",
       qty_in_stock: "",
       variations: [{ name: "", value: "" }],
+      product_item_id: ""
     },
   ]);
 
@@ -376,6 +377,7 @@ export default function EditProduct({ params }: { params: { id: string } }) {
         qty_discount: "",
         qty_in_stock: "",
         variations: [{ name: "", value: "" }],
+        product_item_id: ""
       },
     ]);
   };

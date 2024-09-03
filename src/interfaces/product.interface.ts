@@ -1,10 +1,10 @@
 import { ICategory } from "./category.interface";
 import { ISupplier } from "./supplier.interface";
-export type ProductVariant = {
+export interface ProductVariant {
   name: string;
   value: string;
-  variation_id:string
-};
+  variation_id?:string
+}
 
 export interface Item {
   product_item_id:string;
@@ -28,5 +28,5 @@ export interface IProduct {
   supplier_id: ISupplier; // Nested interface for supplier
   items: Item[];
   createdAt: string;
-  product_id: string;
+  product_id?: string;
 }

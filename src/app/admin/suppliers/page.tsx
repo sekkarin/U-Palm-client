@@ -33,7 +33,6 @@ import { useRouter } from "next/navigation";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
 import { ISupplier } from "@/interfaces/supplier.interface";
-import Link from "next/link";
 
 export default function Suppliers() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -215,15 +214,14 @@ export default function Suppliers() {
                         >
                           รายละเอียด
                         </MenuItem>
-                        <MenuItem className="text-orange-500 border-orange-500 border-2 hover:bg-primary-200 p-2 rounded my-1 cursor-pointer">
-                          <Link
-                            href={{
-                              pathname: "/edit-supplier/",
-                              query: { id: row.supplier_id },
-                            }}
-                          >
-                            แก้ใข
-                          </Link>
+                        <MenuItem
+                          onClick={createHandleMenuClick(
+                            "edit",
+                            row.supplier_id
+                          )}
+                          className="text-orange-500 border-orange-500 border-2 hover:bg-primary-200 p-2 rounded my-1 cursor-pointer"
+                        >
+                          แก้ใข
                         </MenuItem>
 
                         <MenuItem

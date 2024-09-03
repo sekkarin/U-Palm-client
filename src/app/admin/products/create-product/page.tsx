@@ -32,7 +32,6 @@ import { ISupplier } from "@/interfaces/supplier.interface";
 import { ICategory } from "@/interfaces/category.interface";
 
 import { IProduct, Item } from "@/interfaces/product.interface";
-import { useRouter } from "next/navigation";
 
 interface Option {
   label: string;
@@ -44,7 +43,6 @@ interface SuppliersResponse {
 interface CategoriesResponse {
   data: ICategory[]; // Adjust based on the actual structure of the API response
 }
-
 
 // TODO: delete file selected
 export default function CreateProduct() {
@@ -82,12 +80,13 @@ export default function CreateProduct() {
       qty_discount: "",
       qty_in_stock: "",
       variations: [{ name: "", value: "" }],
+      product_item_id: "",
     },
   ]);
 
   const axiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
-  const route = useRouter();
+
   const resetForm = () => {
     setImageBannerAdverting(null);
     setProductImages(null);
@@ -101,15 +100,18 @@ export default function CreateProduct() {
       supplier_id: "",
       category_id: "",
     });
-    setItems([{
-      base_price: "",
-      discount: "",
-      shipping: "",
-      profit: "",
-      qty_discount: "",
-      qty_in_stock: "",
-      variations: [{ name: "", value: "" }],
-    }]);
+    setItems([
+      {
+        base_price: "",
+        discount: "",
+        shipping: "",
+        profit: "",
+        qty_discount: "",
+        qty_in_stock: "",
+        variations: [{ name: "", value: "" }],
+        product_item_id: "",
+      },
+    ]);
   };
 
   const mutation = useMutation({
@@ -389,7 +391,7 @@ export default function CreateProduct() {
         qty_discount: "",
         qty_in_stock: "",
         variations: [{ name: "", value: "" }],
-       
+        product_item_id: "",
       },
     ]);
   };

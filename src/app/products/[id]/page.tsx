@@ -12,7 +12,6 @@ import {
   Grid,
   IconButton,
   ImageListItem,
-  Input,
   Modal,
   Paper,
   Stack,
@@ -25,7 +24,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import DOMPurify from "dompurify";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 
@@ -62,14 +60,16 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     setOpen(false);
     setSelectedImage(null);
   };
-  const increaseQuantity = () => setQuantity((prev) => prev + 1);
+  const increaseQuantity = () => setQuantity((prev) => (prev ? prev + 1 : 0));
   const decreaseQuantity = () =>
-    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-  const handleOptionSelect = (id: string, value: string) => {
-    setSelectedOption({
-      variation_id: id,
-      value: value,
-    });
+    setQuantity((prev) => (prev ?? 0 > 1 ? prev ?? 0 - 1 : 1));
+  const handleOptionSelect = (id: string | undefined, value: string) => {
+    if (id) {
+      setSelectedOption({
+        variation_id: id,
+        value: value,
+      });
+    }
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
@@ -115,320 +115,321 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
           </Typography>
         </Breadcrumbs>
         {product && (
-          <Box>
-            <Image
-              src={product.image_banner_adverting}
-              width={970}
-              height={250}
-              alt={"image_banner_adverting" + product.name}
-              className="mx-auto object-cover w-full h-[260px] my-2 rounded-sm"
-            />
-            {/* detail product */}
-            <Paper elevation={4} className="p-2 rounded-md">
-              <Grid container spacing={2}>
-                <Grid item md={7} className="w-[300] h-full">
-                  <Carousel navButtonsAlwaysVisible={true}>
-                    {product.product_image.map((image, i) => (
-                      <ImageListItem key={i} onClick={() => handleOpen(image)}>
-                        <Image
-                          src={image}
-                          width={250}
-                          height={250}
-                          alt={product.name}
-                          className="mx-auto cursor-pointer"
-                          loading="lazy"
-                        />
-                      </ImageListItem>
-                    ))}
-                  </Carousel>
-                </Grid>
-                <Grid item md={5} className="w-64 h-full">
-                  <p>{product?.name}</p>
-                  <p>
-                    {product &&
-                      product.items.reduce(
-                        (previous, current) =>
-                          Math.min(
-                            previous,
-                            parseFloat(current?.selling_price as string)
-                          ),
-                        parseFloat(product.items[0].selling_price as string)
-                      )}{" "}
-                    -{" "}
-                    {product &&
-                      product.items.reduce(
-                        (previous, current) =>
-                          Math.max(
-                            previous,
-                            parseFloat(current?.selling_price as string)
-                          ),
-                        parseFloat(product.items[0].selling_price as string)
-                      )}
-                    <AttachMoneyIcon />
-                  </p>
-                  <p>
-                    ซื้อขั้นตํ่า{" "}
-                    {product?.items.map((value) => value.qty_discount)} ชิ้น,
-                    ถูกลง {product?.items.map((value) => value.discount)}
-                  </p>
-                  <p>
-                    ค่าส่ง{" "}
-                    {product &&
-                      product.items.reduce(
-                        (previous, current) =>
-                          Math.min(
-                            previous,
-                            parseFloat(current?.shipping as string)
-                          ),
-                        parseFloat(product.items[0].shipping as string)
-                      )}{" "}
-                    -{" "}
-                    {product &&
-                      product.items.reduce(
-                        (previous, current) =>
-                          Math.max(
-                            previous,
-                            parseFloat(current?.shipping as string)
-                          ),
-                        parseFloat(product.items[0].shipping as string)
-                      )}
-                  </p>
-                  <p>
-                    มีสินค้าทั้งหมด{" "}
-                    {product.items.reduce(
-                      (prev, curr) => prev + parseInt(curr.qty_in_stock),
-                      0
-                    )}{" "}
-                    ชิ้น
-                  </p>
-
-                  <Stack direction={"row"} alignItems={"center"}>
-                    <span>ผู้จำหน่าย</span>
-                    <Image
-                      src={product.supplier_id.profileImage}
-                      width={50}
-                      height={50}
-                      alt={product.supplier_id.name}
-                      onClick={() =>
-                        handleOpen(product.supplier_id.profileImage)
-                      }
-                      className="cursor-pointer"
-                    />
-                    <Link
-                      href={"#"}
-                      className="hover:text-blue-500 hover:underline"
-                    >
-                      {product.supplier_id.name}
-                    </Link>
-                  </Stack>
-                  <p>ตัวเลือกสินค้า</p>
-                  <Stack direction={"row"} spacing={1}>
-                    {product.items.map((item) =>
-                      item.variations.map((variation, i) => (
-                        <Button
+          <Grid container spacing={1}>
+            <Grid item sm={12} md={12} lg={12}>
+              <Image
+                src={product.image_banner_adverting}
+                width={970}
+                height={250}
+                alt={"image_banner_adverting" + product.name}
+                className="rounded-sm object-cover w-full h-[250px] mx-auto" // Responsive utility classes
+              />
+            </Grid>
+            <Grid item sm={12} md={12} lg={12}>
+              {/* detail product */}
+              <Paper elevation={4} className="p-2 rounded-md">
+                <Grid container spacing={2}>
+                  <Grid item sm={12} md={7} className="w-[300] h-full">
+                    <Carousel navButtonsAlwaysVisible={true}>
+                      {product.product_image.map((image, i) => (
+                        <ImageListItem
                           key={i}
-                          variant={
-                            selectedOption?.value === variation.value
-                              ? "contained"
-                              : "outlined"
-                          }
-                          onClick={() =>
-                            handleOptionSelect(
-                              variation.variation_id,
-                              variation.value
-                            )
-                          }
+                          onClick={() => handleOpen(image)}
                         >
-                          {variation.name} - {variation.value}
-                        </Button>
-                      ))
-                    )}
-                  </Stack>
-                  <Box
-                    sx={{
-                      // border: "1px solid black",
-                      padding: 2,
-                      display: "inline-block",
-                      // backgroundColor: "#F0F0F0",
-                    }}
-                  >
+                          <Image
+                            src={image}
+                            width={250}
+                            height={250}
+                            alt={product.name}
+                            className="mx-auto cursor-pointer"
+                            loading="lazy"
+                          />
+                        </ImageListItem>
+                      ))}
+                    </Carousel>
+                  </Grid>
+                  <Grid item sm={12} md={5} className="w-64 h-full">
+                    <Typography variant="body1">{product?.name}</Typography>
+                    <Typography variant="body2">
+                      ราคา{" "}
+                      {product &&
+                        product.items.reduce(
+                          (previous, current) =>
+                            Math.min(
+                              previous,
+                              parseFloat(current?.selling_price as string)
+                            ),
+                          parseFloat(product.items[0].selling_price as string)
+                        )}{" "}
+                      -{" "}
+                      {product &&
+                        product.items.reduce(
+                          (previous, current) =>
+                            Math.max(
+                              previous,
+                              parseFloat(current?.selling_price as string)
+                            ),
+                          parseFloat(product.items[0].selling_price as string)
+                        )}
+                    </Typography>
+                    <Typography variant="body1">
+                      ซื้อขั้นตํ่า{" "}
+                      {product?.items.map((value) => value.qty_discount)} ชิ้น,
+                      ถูกลง{" "}
+                      <b>{product?.items.map((value) => value.discount)}</b>
+                    </Typography>
+                    <Typography variant="body1">
+                      ค่าส่ง{" "}
+                      {product &&
+                        product.items.reduce(
+                          (previous, current) =>
+                            Math.min(
+                              previous,
+                              parseFloat(current?.shipping as string)
+                            ),
+                          parseFloat(product.items[0].shipping as string)
+                        )}{" "}
+                      -{" "}
+                      {product &&
+                        product.items.reduce(
+                          (previous, current) =>
+                            Math.max(
+                              previous,
+                              parseFloat(current?.shipping as string)
+                            ),
+                          parseFloat(product.items[0].shipping as string)
+                        )}
+                    </Typography>
+                    <Typography variant="body1">
+                      มีสินค้าทั้งหมด{" "}
+                      {product.items.reduce(
+                        (prev, curr) => prev + parseInt(curr.qty_in_stock),
+                        0
+                      )}{" "}
+                      ชิ้น
+                    </Typography>
+
+                    <Stack direction={"row"} alignItems={"center"} spacing={1}>
+                      <Typography variant="body2">ผู้จำหน่าย</Typography>
+                      <Image
+                        src={product.supplier_id.profileImage}
+                        width={50}
+                        height={50}
+                        alt={product.supplier_id.name}
+                        onClick={() =>
+                          handleOpen(product.supplier_id.profileImage)
+                        }
+                        className="cursor-pointer"
+                      />
+                      <Link
+                        href={"#"}
+                        className="hover:text-blue-500 hover:underline"
+                      >
+                        {product.supplier_id.name}
+                      </Link>
+                    </Stack>
+                    <Typography variant="body1">ตัวเลือกสินค้า</Typography>
+                    <Stack direction={"row"} spacing={1}>
+                      {product.items.map((item) =>
+                        item.variations.map((variation, i) => (
+                          <Button
+                            key={i}
+                            variant={
+                              selectedOption?.value === variation.value
+                                ? "contained"
+                                : "outlined"
+                            }
+                            onClick={() =>
+                              handleOptionSelect(
+                                variation?.variation_id,
+                                variation.value
+                              )
+                            }
+                          >
+                            {variation.name} - {variation.value}
+                          </Button>
+                        ))
+                      )}
+                    </Stack>
                     <Box
                       sx={{
-                        marginTop: 2,
-                        display: "flex",
-                        alignItems: "center",
+                        // border: "1px solid black",
+                        padding: 2,
+                        display: "inline-block",
+
+                        // backgroundColor: "#F0F0F0",
                       }}
                     >
-                      <IconButton
-                        size="large"
-                        onClick={decreaseQuantity}
-                        aria-label="add cart"
+                      <Box
                         sx={{
-                          color: "green",
+                          marginTop: 2,
+                          display: "flex",
+                          alignItems: "center",
                         }}
                       >
-                        <RemoveCircleIcon sx={{ fontSize: "35px" }} />
-                      </IconButton>
-                      <TextField
-                        value={quantity}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        type="number"
-                        variant="outlined"
-                        inputProps={{
-                          min: 1,
-                          style: {
-                            textAlign: "center",
-                          },
-                        }}
-                        sx={{
-                          width: "100px",
-                          marginX: "10px",
-                        }}
-                      />
-
-                      <IconButton
-                        size="large"
-                        onClick={increaseQuantity}
-                        aria-label="add cart"
-                        sx={{
-                          color: "green",
-                        }}
-                      >
-                        <AddCircleIcon sx={{ fontSize: "35px" }} />
-                      </IconButton>
-                    </Box>
-
-                    <Typography
-                      color="error"
-                      variant="body1"
-                      sx={{ marginTop: 2 }}
-                    >
-                      Total 23 Pcs.
-                    </Typography>
-
-                    <Typography variant="body2" color="error">
-                      Price {} USD/pcs
-                    </Typography>
-                    <Typography variant="body2" color="error">
-                      Total Price 23 USD
-                    </Typography>
-                  </Box>
-                  <Button
-                    variant="contained"
-                    onClick={handleOpenCart}
-                    fullWidth
-                  >
-                    เพิ่มในตะกร้า
-                  </Button>
-                </Grid>
-              </Grid>
-            </Paper>
-            {/* show image */}
-            <Modal open={open} onClose={handleClose}>
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  bgcolor: "background.paper",
-                  borderRadius: 1,
-                  boxShadow: 24,
-                  p: 4,
-                  outline: "none",
-                }}
-              >
-                {selectedImage && (
-                  <Image
-                    src={selectedImage}
-                    alt={product.name}
-                    style={{ width: "100%", height: "auto", maxHeight: "80vh" }}
-                    width={500}
-                    height={600}
-                  />
-                )}
-              </Box>
-            </Modal>
-            {/* show cart */}
-            <Modal open={openCart} onClose={handleCloseCart}>
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  bgcolor: "background.paper",
-                  borderRadius: 1,
-                  boxShadow: 24,
-                  p: 4,
-                  outline: "none",
-                }}
-              >
-                {product.items.length > 0 &&
-                  product.items.map((item, i) => {
-                    return (
-                      <Box key={i}>
-                        <p>
-                          {" "}
-                          {item.variations.map(
-                            (variation) => variation.value
-                          )}{" "}
-                          {item.selling_price}
-                        </p>
+                        <IconButton
+                          size="large"
+                          onClick={decreaseQuantity}
+                          aria-label="add cart"
+                          sx={{
+                            color: "green",
+                          }}
+                        >
+                          <RemoveCircleIcon sx={{ fontSize: "35px" }} />
+                        </IconButton>
+                        <TextField
+                          value={quantity}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          type="number"
+                          variant="outlined"
+                          inputProps={{
+                            min: 1,
+                            style: {
+                              textAlign: "center",
+                            },
+                          }}
+                          sx={{
+                            width: "100px",
+                            marginX: "10px",
+                          }}
+                        />
+                        <IconButton
+                          size="large"
+                          onClick={increaseQuantity}
+                          aria-label="add cart"
+                          sx={{
+                            color: "green",
+                          }}
+                        >
+                          <AddCircleIcon sx={{ fontSize: "35px" }} />
+                        </IconButton>
                       </Box>
-                    );
-                  })}
-              </Box>
-            </Modal>
-            {/* description product */}
-            <Paper
-              elevation={4}
-              sx={{
-                p: 2,
-                mt: 2,
-              }}
-              className="rounded-md"
-            >
-              <p>คำอธิบายสินค้า</p>
-              <Box
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(product.description),
-                }}
-                component={"div"}
+                    </Box>
+                    <Button
+                      variant="contained"
+                      onClick={handleOpenCart}
+                      fullWidth
+                    >
+                      เพิ่มในตะกร้า
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Paper>
+              {/* show image */}
+              <Modal open={open} onClose={handleClose}>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    bgcolor: "background.paper",
+                    borderRadius: 1,
+                    boxShadow: 24,
+                    p: 4,
+                    outline: "none",
+                  }}
+                >
+                  {selectedImage && (
+                    <Image
+                      src={selectedImage}
+                      alt={product.name}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        maxHeight: "80vh",
+                      }}
+                      width={500}
+                      height={600}
+                    />
+                  )}
+                </Box>
+              </Modal>
+              {/* show cart */}
+              <Modal open={openCart} onClose={handleCloseCart}>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    bgcolor: "background.paper",
+                    borderRadius: 1,
+                    boxShadow: 24,
+                    p: 4,
+                    outline: "none",
+                  }}
+                >
+                  {product.items.length > 0 &&
+                    product.items.map((item, i) => {
+                      return (
+                        <Box key={i}>
+                          <p>
+                            {" "}
+                            {item.variations.map(
+                              (variation) => variation.value
+                            )}{" "}
+                            {item.selling_price}
+                          </p>
+                        </Box>
+                      );
+                    })}
+                </Box>
+              </Modal>
+              {/* description product */}
+              <Paper
+                elevation={4}
                 sx={{
-                  whiteSpace: "pre-wrap",
-                  "& h1": { fontSize: "2rem", color: "#333", margin: "1rem 0" },
-                  "& h2": {
-                    fontSize: "1.75rem",
-                    color: "#555",
-                    margin: "0.8rem 0",
-                  },
-                  "& h3": {
-                    fontSize: "1.5rem",
-                    color: "#777",
-                    margin: "0.6rem 0",
-                  },
-                  "& p": {
-                    fontSize: "1rem",
-                    color: "#000",
-                    margin: "0.5rem 0",
-                  },
-                  "& ul": {
-                    paddingLeft: "20px",
-                    margin: "1rem 0",
-                    listStyleType: "disc",
-                  }, // Force numbering for ul
-                  "& li": { marginBottom: "0.5rem" },
-                  "& ol": {
-                    listStyleType: "decimal",
-                    paddingLeft: "20px",
-                  },
-                  "& em": { fontStyle: "italic" },
+                  p: 2,
+                  mt: 2,
                 }}
-              />
-            </Paper>
-          </Box>
+                className="rounded-md"
+              >
+                <Typography variant="h4">คำอธิบายสินค้า</Typography>
+                <Box
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(product.description),
+                  }}
+                  component={"div"}
+                  sx={{
+                    whiteSpace: "pre-wrap",
+                    "& h1": {
+                      fontSize: "2rem",
+                      color: "#333",
+                      margin: "1rem 0",
+                    },
+                    "& h2": {
+                      fontSize: "1.75rem",
+                      color: "#555",
+                      margin: "0.8rem 0",
+                    },
+                    "& h3": {
+                      fontSize: "1.5rem",
+                      color: "#777",
+                      margin: "0.6rem 0",
+                    },
+                    "& p": {
+                      fontSize: "1rem",
+                      color: "#000",
+                      margin: "0.5rem 0",
+                    },
+                    "& ul": {
+                      paddingLeft: "20px",
+                      margin: "1rem 0",
+                      listStyleType: "disc",
+                    }, // Force numbering for ul
+                    "& li": { marginBottom: "0.5rem" },
+                    "& ol": {
+                      listStyleType: "decimal",
+                      paddingLeft: "20px",
+                    },
+                    "& em": { fontStyle: "italic" },
+                  }}
+                />
+              </Paper>
+            </Grid>
+          </Grid>
         )}
       </Container>
       <Footer />

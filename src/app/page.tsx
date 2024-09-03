@@ -47,7 +47,7 @@ export default function Home() {
             <div>
               <div className="w-[100%]">
                 <div className="text-[31px] font-[400]">
-                  ยินดีต้อนรับ' เข้าสู่ u-palm
+                  ยินดีต้อนรับ`&apos;` เข้าสู่ u-palm
                 </div>
                 <div className="text-[14.x] mt-4 text-[#d6d6d6]">
                   มีรถให้เช่ามากกว่า 50 คนทั่วประเทศไทย รับประกันความปลอดภัย
