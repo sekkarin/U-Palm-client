@@ -11,6 +11,8 @@ import { useAppDispatch, useAppSelector } from "@/libs/hook";
 import { setCredential, logout } from "@/libs/features/auth/authSlice";
 
 import { useRouter } from "next/navigation";
+import { initialCart } from "@/libs/features/cart/cartSlice";
+import { Cart } from "@/interfaces/cart.interface";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -43,7 +45,34 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
             },
             withCredentials: true,
           });
-          // const cartResponse = await axiosPrivate.get()
+          const cartResponse = await axiosPrivate.get<Cart[]>("/carts/", {
+            headers: {
+              Authorization: "Bearer " + accessToken,
+            },
+            withCredentials: true,
+          });
+
+          const itemCart = cartResponse.data.map((item) => item.items).flat();
+
+          itemCart.map((item) =>
+            dispatch(
+              initialCart({
+                product_item_id: item.product_item_id,
+                qty: item.qty,
+                variation_id: item._id!,
+              })
+            )
+          );
+          
+
+          // itemCart.dispatch(
+          //   addCartItem({
+          //     product_item_id: cartResponse?.data?._id,
+          //     qty: cartResponse?.data?._id,
+          //     variation_id: "",
+          //     product: "",
+          //   })
+          // );
 
           dispatch(
             setCredential({
@@ -55,7 +84,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         setIsAuthenticated(true);
       } catch (error) {
         console.log(error);
-        
+
         dispatch(logout());
         setIsAuthenticated(false);
         router.replace("/", { scroll: false });

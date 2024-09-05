@@ -18,7 +18,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -27,7 +27,15 @@ import DOMPurify from "dompurify";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { useAppDispatch } from "@/libs/hook";
-import { addCart } from "@/libs/features/cart/cartSclice";
+import { addCartItem, initialCart } from "@/libs/features/cart/cartSlice";
+import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
+import { Cart } from "@/interfaces/cart.interface";
+import Cart from "@/app/cart/page";
+interface Body {
+  product_item_id: string;
+  qty: number;
+  variation_id: string;
+}
 
 export default function ProductDetail({ params }: { params: { id: string } }) {
   const [open, setOpen] = useState(false);
@@ -40,27 +48,45 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     value: string;
     item_id: string;
   } | null>(null);
+  const axiosAuth = useAxiosAuth();
 
   const dispatch = useAppDispatch();
+  const mutation = useMutation({
+    mutationFn: async (body: Body) => {
+      return await axiosAuth.post<Cart>("/carts", body);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+    onSuccess(data) {
+      const itemCart = data.data.items.flat();
+      itemCart.map((item) =>
+        dispatch(
+          initialCart({
+            product_item_id: item.product_item_id,
+            qty: item.qty,
+            variation_id: item._id!,
+          })
+        )
+      );
+    },
+  });
 
   const handleAddToCart = () => {
     if (!selectedOption?.item_id || !selectedOption.variation_id || !quantity) {
+      console.log(
+        "selectedOption.variation_id",
+        "not select",
+        !selectedOption?.variation_id
+      );
+
       return;
     }
-    console.log(selectedOption?.item_id,selectedOption.variation_id,quantity,params.id);
-    
-    dispatch(
-      addCart({
-        product_item_id: selectedOption?.item_id,
-        qty: quantity,
-        productItems: [
-          {
-            item: selectedOption?.item_id,
-            variant_id: selectedOption?.variation_id,
-          },
-        ],
-      })
-    );
+    mutation.mutate({
+      product_item_id: selectedOption?.item_id,
+      qty: quantity,
+      variation_id: selectedOption?.variation_id,
+    });
     setQuantity(1);
     setPreviousQuantity(1);
     setSelectedOption(null);
@@ -87,7 +113,10 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
   };
   const increaseQuantity = () => setQuantity((prev) => (prev ? prev + 1 : 0));
   const decreaseQuantity = () =>
-    setQuantity((prev) => (prev ?? 0 > 1 ? prev ?? 0 - 1 : 1));
+    setQuantity((prev) => {
+      if (!prev) return 1;
+      return prev > 1 ? prev - 1 : 1;
+    });
   const handleOptionSelect = (
     id: string | undefined,
     item_id: string,
@@ -102,12 +131,14 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     }
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (!isNaN(value) && value >= 1) {
-      setQuantity(value);
-      setPreviousQuantity(value); // อัปเดตค่าก่อนหน้าทุกครั้งที่มีการเปลี่ยนแปลง
-    } else if (e.target.value === "") {
-      setQuantity(null); // กำหนดค่าเป็น null ถ้าฟิลด์ว่างเปล่า
+    if (e.target) {
+      const value = parseInt(e.target.value);
+      if (!isNaN(value) && value >= 1) {
+        setQuantity(value);
+        setPreviousQuantity(value); // อัปเดตค่าก่อนหน้าทุกครั้งที่มีการเปลี่ยนแปลง
+      } else if (e.target.value === "") {
+        setQuantity(null); // กำหนดค่าเป็น null ถ้าฟิลด์ว่างเปล่า
+      }
     }
   };
   const handleBlur = () => {
@@ -126,7 +157,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
   if (productQuery.isLoading) {
     return <Loading />;
   }
-  console.log(product);
+  // console.log(product);
 
   return (
     <>
@@ -340,6 +371,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                     <Button
                       variant="contained"
                       onClick={handleAddToCart}
+                      disabled={!selectedOption?.variation_id || !quantity}
                       fullWidth
                     >
                       เพิ่มในตะกร้า

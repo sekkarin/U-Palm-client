@@ -214,7 +214,7 @@ export default function CreateProduct() {
     }));
   };
   const handleSubmit = async (event: { preventDefault: () => void }) => {
-    console.log("summit");
+    
 
     event.preventDefault();
     const formData = new FormData();
