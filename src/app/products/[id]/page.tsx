@@ -27,14 +27,17 @@ import DOMPurify from "dompurify";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { useAppDispatch } from "@/libs/hook";
-import { addCartItem, initialCart } from "@/libs/features/cart/cartSlice";
+import { initialCart } from "@/libs/features/cart/cartSlice";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { Cart } from "@/interfaces/cart.interface";
-import Cart from "@/app/cart/page";
+import { useAuth } from "@/contexts/AuthProvider";
+import { useRouter } from "next/navigation";
+
 interface Body {
   product_item_id: string;
   qty: number;
   variation_id: string;
+  product_id: string;
 }
 
 export default function ProductDetail({ params }: { params: { id: string } }) {
@@ -48,9 +51,11 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     value: string;
     item_id: string;
   } | null>(null);
+  const { isAuthenticated, loading } = useAuth();
   const axiosAuth = useAxiosAuth();
 
   const dispatch = useAppDispatch();
+  const route = useRouter();
   const mutation = useMutation({
     mutationFn: async (body: Body) => {
       return await axiosAuth.post<Cart>("/carts", body);
@@ -60,12 +65,16 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     },
     onSuccess(data) {
       const itemCart = data.data.items.flat();
+   
+
       itemCart.map((item) =>
         dispatch(
           initialCart({
             product_item_id: item.product_item_id,
             qty: item.qty,
-            variation_id: item._id!,
+            variation_id: item.variation_id,
+            product_id: item.product_id,
+            cart_item_id: item.cart_item_id,
           })
         )
       );
@@ -73,12 +82,11 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
   });
 
   const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      route.replace("../login");
+    }
     if (!selectedOption?.item_id || !selectedOption.variation_id || !quantity) {
-      console.log(
-        "selectedOption.variation_id",
-        "not select",
-        !selectedOption?.variation_id
-      );
+      
 
       return;
     }
@@ -86,6 +94,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
       product_item_id: selectedOption?.item_id,
       qty: quantity,
       variation_id: selectedOption?.variation_id,
+      product_id: params.id,
     });
     setQuantity(1);
     setPreviousQuantity(1);
@@ -154,10 +163,11 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
   if (!params.id) {
     return <h2>Error something</h2>;
   }
-  if (productQuery.isLoading) {
+
+  if (productQuery.isLoading || loading) {
     return <Loading />;
   }
-  // console.log(product);
+
 
   return (
     <>
@@ -233,12 +243,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                           parseFloat(product.items[0].selling_price as string)
                         )}
                     </Typography>
-                    <Typography variant="body1">
-                      ซื้อขั้นตํ่า{" "}
-                      {product?.items.map((value) => value.qty_discount)} ชิ้น,
-                      ถูกลง{" "}
-                      <b>{product?.items.map((value) => value.discount)}</b>
-                    </Typography>
+
                     <Typography variant="body1">
                       ค่าส่ง{" "}
                       {product &&

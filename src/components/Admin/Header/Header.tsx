@@ -53,13 +53,11 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const AdminAppBar: React.FC<AppBarProps> = ({ open, toggleDrawer }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const phot = useAppSelector((state) => state.auth.photo);
 
   const openMenu = Boolean(anchorEl);
-  const handleClick = (event: {
-    currentTarget: React.SetStateAction<null>;
-  }) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const dispatch = useAppDispatch();

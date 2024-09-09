@@ -26,14 +26,12 @@ import Badge from "@mui/material/Badge";
 
 const Header: React.FC = () => {
   const { isAuthenticated, loading } = useAuth();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const photo = useAppSelector((state) => state.auth.photo);
   const cart = useAppSelector((state) => state.cart);
 
   const open = Boolean(anchorEl);
-  const handleClick = (event: {
-    currentTarget: React.SetStateAction<null>;
-  }) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const dispatch = useAppDispatch();

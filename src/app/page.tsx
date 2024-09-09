@@ -99,7 +99,7 @@ export default function Home() {
         <Box>
           {/* <Image/> */}
           <Image
-            src={"/images/Converted_Banner_Palm_Seed_Product.png"}
+            src={"/images/U-PALM_Brochure.png"}
             alt="Converted_Banner_Palm_Seed_Product"
             width={1900}
             height={200}

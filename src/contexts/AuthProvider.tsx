@@ -59,11 +59,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
               initialCart({
                 product_item_id: item.product_item_id,
                 qty: item.qty,
-                variation_id: item._id!,
+                variation_id: item.variation_id,
+                product_id: item.product_id,
+                cart_item_id: item.cart_item_id
               })
             )
           );
-          
 
           // itemCart.dispatch(
           //   addCartItem({

@@ -1,12 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 import Image from "next/image";
-import {
-  Fade,
-  FormControl,
-  Input,
-  InputAdornment,
-} from "@mui/material";
+import { Fade, FormControl, Input, InputAdornment } from "@mui/material";
 import Link from "next/link";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -35,8 +30,6 @@ export default function Register() {
       process.env.NEXT_PUBLIC_API_DOMAIN + "/auth/google-redirect";
   };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("handleSubmit");
-
     try {
       event.preventDefault();
       setIsLoading(true);

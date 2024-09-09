@@ -33,7 +33,6 @@ import { ICategory } from "@/interfaces/category.interface";
 
 import { IProduct, Item } from "@/interfaces/product.interface";
 
-
 interface Option {
   label: string;
   id: string;
@@ -80,12 +79,15 @@ export default function EditProduct({ params }: { params: { id: string } }) {
       profit: "",
       qty_discount: "",
       qty_in_stock: "",
-      variations: [{
-        name: "", value: "",
-        variation_id: undefined
-      }],
+      variations: [
+        {
+          name: "",
+          value: "",
+          variation_id: undefined,
+        },
+      ],
       product_item_id: "",
-      selling_price: undefined
+      selling_price: undefined,
     },
   ]);
 
@@ -161,8 +163,6 @@ export default function EditProduct({ params }: { params: { id: string } }) {
         setImageProductsReview((prevImages) => [...prevImages, ...newImages]);
         setProductImages(files);
       } else {
-        console.log("reset image");
-
         setImageProductsReview([]);
         setProductImages(null);
       }
@@ -196,8 +196,6 @@ export default function EditProduct({ params }: { params: { id: string } }) {
     }));
   };
   const handleSubmit = async (event: { preventDefault: () => void }) => {
-    console.log("summit");
-
     event.preventDefault();
     const formData = new FormData();
 
@@ -281,7 +279,6 @@ export default function EditProduct({ params }: { params: { id: string } }) {
         setLoading(true);
         try {
           // await axiosAuth.get("/suppliers"))
-          console.log("search api");
 
           const response = await axiosAuth.get<SuppliersResponse>(
             `/suppliers`,
@@ -366,8 +363,9 @@ export default function EditProduct({ params }: { params: { id: string } }) {
   const handleAddVariant = (itemIndex: number) => {
     const newItems = [...items];
     newItems[itemIndex].variations.push({
-      name: "", value: "",
-      variation_id: undefined
+      name: "",
+      value: "",
+      variation_id: undefined,
     });
     setItems(newItems);
   };
@@ -383,12 +381,15 @@ export default function EditProduct({ params }: { params: { id: string } }) {
         profit: "",
         qty_discount: "",
         qty_in_stock: "",
-        variations: [{
-          name: "", value: "",
-          variation_id: undefined
-        }],
+        variations: [
+          {
+            name: "",
+            value: "",
+            variation_id: undefined,
+          },
+        ],
         product_item_id: "",
-        selling_price: undefined
+        selling_price: undefined,
       },
     ]);
   };
@@ -446,7 +447,7 @@ export default function EditProduct({ params }: { params: { id: string } }) {
   ) {
     return <Loading />;
   }
- 
+
   return (
     <Layout>
       <Breadcrumbs aria-label="breadcrumb">

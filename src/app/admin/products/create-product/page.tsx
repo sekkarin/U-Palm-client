@@ -79,12 +79,15 @@ export default function CreateProduct() {
       profit: "",
       qty_discount: "",
       qty_in_stock: "",
-      variations: [{
-        name: "", value: "",
-        variation_id: undefined
-      }],
+      variations: [
+        {
+          name: "",
+          value: "",
+          variation_id: undefined,
+        },
+      ],
       product_item_id: "",
-      selling_price: undefined
+      selling_price: undefined,
     },
   ]);
 
@@ -112,12 +115,15 @@ export default function CreateProduct() {
         profit: "",
         qty_discount: "",
         qty_in_stock: "",
-        variations: [{
-          name: "", value: "",
-          variation_id: undefined
-        }],
+        variations: [
+          {
+            name: "",
+            value: "",
+            variation_id: undefined,
+          },
+        ],
         product_item_id: "",
-        selling_price: undefined
+        selling_price: undefined,
       },
     ]);
   };
@@ -131,8 +137,6 @@ export default function CreateProduct() {
       });
     },
     onError: (error) => {
-      console.log(error);
-
       const errorMessages =
         error instanceof AxiosError
           ? error.response?.data?.message
@@ -214,8 +218,6 @@ export default function CreateProduct() {
     }));
   };
   const handleSubmit = async (event: { preventDefault: () => void }) => {
-    
-
     event.preventDefault();
     const formData = new FormData();
 
@@ -299,7 +301,6 @@ export default function CreateProduct() {
         setLoading(true);
         try {
           // await axiosAuth.get("/suppliers"))
-          console.log("search api");
 
           const response = await axiosAuth.get<SuppliersResponse>(
             `/suppliers`,
@@ -330,7 +331,6 @@ export default function CreateProduct() {
         setLoading(true);
         try {
           // await axiosAuth.get("/suppliers"))
-          console.log("search api");
 
           const response = await axiosAuth.get<CategoriesResponse>(
             `/categories`,
@@ -384,8 +384,9 @@ export default function CreateProduct() {
   const handleAddVariant = (itemIndex: number) => {
     const newItems = [...items];
     newItems[itemIndex].variations.push({
-      name: "", value: "",
-      variation_id: undefined
+      name: "",
+      value: "",
+      variation_id: undefined,
     });
     setItems(newItems);
   };
@@ -401,12 +402,15 @@ export default function CreateProduct() {
         profit: "",
         qty_discount: "",
         qty_in_stock: "",
-        variations: [{
-          name: "", value: "",
-          variation_id: undefined
-        }],
+        variations: [
+          {
+            name: "",
+            value: "",
+            variation_id: undefined,
+          },
+        ],
         product_item_id: "",
-        selling_price: undefined
+        selling_price: undefined,
       },
     ]);
   };

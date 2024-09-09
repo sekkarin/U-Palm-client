@@ -91,7 +91,7 @@ export default function Suppliers() {
     supplier_id: string
   ) => {
     return () => {
-      console.log(supplier_id);
+      
 
       if (menuItem === "delete") {
         handleDeleteClick();

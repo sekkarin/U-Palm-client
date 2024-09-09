@@ -21,7 +21,6 @@ const cartSlice = createSlice({
           item.product_item_id === product_item_id &&
           item.variation_id === variation_id
       );
-     
       
       if (existingCartItem) {
         // ถ้าสินค้ามีอยู่แล้วในตะกร้า, เพิ่มจำนวน qty
@@ -59,12 +58,13 @@ const cartSlice = createSlice({
     },
     initialCart : (state, action: PayloadAction<CartItem>) =>{
       const { product_item_id, variation_id, qty } = action.payload;
+     
       const existingCartItem = state.items.find(
         (item) =>
           item.product_item_id === product_item_id &&
-          item.variation_id === variation_id
+          item.variation_id === variation_id 
       );
-     
+   
       
       if (existingCartItem) {
         // ถ้าสินค้ามีอยู่แล้วในตะกร้า, เพิ่มจำนวน qty

@@ -20,6 +20,7 @@ export interface Item {
 }
 
 export interface IProduct {
+  supplier_name: string;
   name: string;
   description: string;
   product_image: string[]; // Array of image URLs

@@ -190,8 +190,6 @@ export default function EditCategory({ params }: { params: { id: string } }) {
   const handleInputChange =
     (field: keyof typeof formValues) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      console.log(event.target.value);
-
       setFormValues({ ...formValues, [field]: event.target.value });
     };
 
