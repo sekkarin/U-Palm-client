@@ -2,7 +2,7 @@
 import Image from "next/image";
 import SearchIcon from "@mui/icons-material/Search";
 import { useQuery } from "@tanstack/react-query";
-import {  getProducts, getSupplier } from "@/libs/getProducts";
+import { getProducts, getSupplier } from "@/libs/getProducts";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import dynamic from "next/dynamic";
@@ -47,12 +47,10 @@ export default function Home() {
             <div>
               <div className="w-[100%]">
                 <div className="text-[31px] font-[400]">
-                  ยินดีต้อนรับ`&apos;` เข้าสู่ u-palm
+                  ยินดีต้อนรับ &apos; เข้าสู่ U Palm
                 </div>
                 <div className="text-[14.x] mt-4 text-[#d6d6d6]">
-                  มีรถให้เช่ามากกว่า 50 คนทั่วประเทศไทย รับประกันความปลอดภัย
-                  เปิดให้บริการมาเเล้วกว่า 5 ปี
-                  ถ้าคุณต้องการรถไม่ว่าจะอยู่ที่ไหน นึกถึง Carental
+                  แพลตฟอร์มการขายสินค้าเกี่ยวกับปาล์มอันดับ 1
                 </div>
                 {/* search product input*/}
                 <div className="mt-4 flex rounded-md p-[1.5px] gap-1">
@@ -108,9 +106,18 @@ export default function Home() {
         </Box>
         {/*End Banner  */}
         {/* Suppliers */}
-        {suppliersQuery.data && (
-          <SupplierCarousel data={suppliersQuery?.data} />
-        )}
+        <Box className="flex justify-center w-[100%] mb-5 items-center mt-10">
+          <div className="w-[80%] pb-[1.7rem] flex flex-col gap-4 bg-white pt-3 px-4 shadow-sm sm:w-[90%] xsm:w-[90%]">
+            {/* Title */}
+            <div className="text-primary-400 pb-3 border-b-[1px] border-gray-200 text-sm">
+              ผู้ขาย
+            </div>
+            {suppliersQuery.data && (
+              <SupplierCarousel data={suppliersQuery?.data} />
+            )}
+          </div>
+        </Box>
+
         {/*End Suppliers */}
       </main>
       <Footer />
