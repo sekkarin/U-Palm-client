@@ -46,8 +46,8 @@ const Header: React.FC = () => {
     if (status === 200) {
       logoutContext();
       handleClose();
-      route.refresh()
     }
+    route.refresh()
   };
   const handleClose = () => {
     setAnchorEl(null);
