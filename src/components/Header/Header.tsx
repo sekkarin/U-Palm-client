@@ -39,7 +39,10 @@ const Header: React.FC = () => {
 
   const logOut = async () => {
     const { status } = await axiosAuth("/auth/logout");
+    console.log(status);
+    
     if (status === 200) {
+      
       handleClose();
       logoutContext();
     }
