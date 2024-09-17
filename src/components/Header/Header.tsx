@@ -42,11 +42,10 @@ const Header: React.FC = () => {
 
   const logOut = async () => {
     const { status } = await axiosAuth("/auth/logout");
-    console.log(status);
 
     if (status === 200) {
-      handleClose();
       logoutContext();
+      handleClose();
       route.replace("/");
     }
   };
@@ -54,7 +53,7 @@ const Header: React.FC = () => {
     setAnchorEl(null);
   };
   if (loading) {
-    return <Loading/>
+    return <Loading />;
   }
 
   return (
