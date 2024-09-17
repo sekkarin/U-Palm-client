@@ -25,7 +25,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 
 const Header: React.FC = () => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, logout: logoutContext } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const photo = useAppSelector((state) => state.auth.photo);
   const cart = useAppSelector((state) => state.cart);
@@ -40,10 +40,12 @@ const Header: React.FC = () => {
   const isAdmin = useRole(Role.ADMIN);
 
   const logOut = async () => {
-    handleClose();
-    dispatch(logout());
     const { status } = await axiosAuth("/auth/logout");
-    console.log(status);
+    if (status === 200) {
+      handleClose();
+      dispatch(logout());
+      logoutContext();
+    }
   };
   const handleClose = () => {
     setAnchorEl(null);
