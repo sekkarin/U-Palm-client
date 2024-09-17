@@ -1,5 +1,6 @@
 name: CD/CD-client
-
+env:
+  NEXT_PUBLIC_API_DOMAIN: ${{secrets.NEXT_PUBLIC_API_DOMAIN}}
 on:
   push:
     branches:
