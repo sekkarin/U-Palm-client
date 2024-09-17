@@ -2,8 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useAppDispatch, useAppSelector } from "@/libs/hook";
-import { logout } from "@/libs/features/auth/authSlice";
+import { useAppSelector } from "@/libs/hook";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import useRole from "@/libs/hooks/useRole";
 import { Role } from "@/constants/enums/Role";
