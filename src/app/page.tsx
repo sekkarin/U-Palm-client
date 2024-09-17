@@ -1,113 +1,126 @@
+"use client";
 import Image from "next/image";
+import SearchIcon from "@mui/icons-material/Search";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts, getSupplier } from "@/libs/getProducts";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import dynamic from "next/dynamic";
+import ProductCarousel from "@/components/ProductCarousel";
+import { IProduct } from "@/interfaces/product.interface";
+import { Box } from "@mui/material";
+import { Loading } from "@/components/Loading";
+import SupplierCarousel from "@/components/SupplierCarousel";
+import { ISupplier } from "@/interfaces/supplier.interface";
+
+// Dynamically import the carousel skeleton loader to avoid SSR issues
+const ProductCarouselSkeleton = dynamic(
+  () => import("@/components/Loading/ProductSkeleton"),
+  {
+    ssr: false,
+  }
+);
 
 export default function Home() {
+  const productsQuery = useQuery<IProduct[]>({
+    queryKey: ["Product-landing-page"],
+    queryFn: () => getProducts(),
+    refetchInterval: 1000 * 60 * 60 * 5,
+  });
+  const suppliersQuery = useQuery<ISupplier[]>({
+    queryKey: ["Suppliers-landing-page"],
+    queryFn: () => getSupplier(),
+    refetchInterval: 1000 * 60 * 60 * 5,
+  });
+
+  if (productsQuery.isLoading || suppliersQuery.isLoading) {
+    return <Loading />;
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <Header />
+      <main className="bg-[f5f5f5] flex w-full h-full relative flex-col z-0">
+        <div className="relative h-[550px] w-[100%] flex justify-center bg-blue-500 mt-[105px]">
+          <div className="bg-[#0000007a] w-[100%] absolute h-[100%]"></div>
+          <div className="absolute text-white w-[60%] justify-left top-[11rem] xl:w-[70%] lg:w-[80%] md:w-[90%] sm:w-[91%] xsm:w-[85%] z-10 ">
+            <div>
+              <div className="w-[100%]">
+                <div className="text-[31px] font-[400]">
+                  ยินดีต้อนรับ &apos; เข้าสู่ U Palm
+                </div>
+                <div className="text-[14.x] mt-4 text-[#d6d6d6]">
+                  แพลตฟอร์มการขายสินค้าเกี่ยวกับปาล์มอันดับ 1
+                </div>
+                {/* search product input*/}
+                <div className="mt-4 flex rounded-md p-[1.5px] gap-1">
+                  <input
+                    type="text"
+                    placeholder="ค้นหาสิ่งที่คุณต้อง..."
+                    className="w-[480px] focus:outline-none pl-3 text-[12.5px] h-[40px] rounded-sm border-[1px] border-[#fff] shadow-inner text-[#000]"
+                  ></input>
+                  <button className="bg-secondary-500  w-[50px] text-[20px] text-[#3e3e3e] hover:bg-secondary-400 transition-all flex items-center justify-center rounded-sm h-[40px]">
+                    <SearchIcon />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <Image
+            src={
+              "/images/The-Borneo-Post-Sustainable-Palm-Oil-Communities-of-Sabah-and-Sarawak-01.jpg"
+            }
+            fill={true}
+            className="object-cover brightness-75"
+            alt={"Palm-Oil"}
+          ></Image>
         </div>
-      </div>
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        {/* Hit hot Products */}
+        <Box className="flex justify-center w-[100%] mb-5 items-center mt-10">
+          <div className="w-[80%] pb-[1.7rem] flex flex-col gap-4 bg-white pt-3 px-4 shadow-sm sm:w-[90%] xsm:w-[90%]">
+            {/* Title */}
+            <div className="text-primary-400 pb-3 border-b-[1px] border-gray-200 text-sm">
+              สินค้าขายดี
+            </div>
+            {productsQuery.isLoading ? (
+              <ProductCarouselSkeleton />
+            ) : (
+              productsQuery.data && (
+                <ProductCarousel data={productsQuery.data} />
+              )
+            )}
+          </div>
+        </Box>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+        {/* Banner  */}
+        <Box>
+          {/* <Image/> */}
+          <Image
+            src={"/images/U-PALM_Brochure.png"}
+            alt="Converted_Banner_Palm_Seed_Product"
+            width={1900}
+            height={200}
+            className="mx-auto w-[90%] my-2"
+          />
+        </Box>
+        {/*End Banner  */}
+        {/* Suppliers */}
+        <Box className="flex justify-center w-[100%] mb-5 items-center mt-10">
+          <div className="w-[80%] pb-[1.7rem] flex flex-col gap-4 bg-white pt-3 px-4 shadow-sm sm:w-[90%] xsm:w-[90%]">
+            {/* Title */}
+            <div className="text-primary-400 pb-3 border-b-[1px] border-gray-200 text-sm">
+              ผู้ขาย
+            </div>
+            {suppliersQuery.data && (
+              <SupplierCarousel data={suppliersQuery?.data} />
+            )}
+          </div>
+        </Box>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        {/*End Suppliers */}
+      </main>
+      <Footer />
+    </>
   );
 }
