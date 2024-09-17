@@ -38,7 +38,7 @@ const SupplierCarousel: React.FC<SupplierCarouselProps> = ({ data }) => {
           sx={{ display: "flex", justifyContent: "center", gap: 2 }}
         >
           {chunk.map((item, i) => (
-            <Link href={`./products/${item.supplier_id}`} key={i}>
+            <Link href={`#`} key={i}>
               <Card
                 key={i}
                 sx={{ maxWidth: 450, margin: "0 auto", width: 250 }}

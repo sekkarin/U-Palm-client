@@ -14,7 +14,7 @@ const useRefreshToken = () => {
         },
         withCredentials: true,
       });
-      console.log(data);
+   
 
       return data.access_token;
     } catch (err: unknown) {

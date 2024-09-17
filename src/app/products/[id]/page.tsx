@@ -193,7 +193,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                 width={970}
                 height={250}
                 alt={"image_banner_adverting" + product.name}
-                className="rounded-sm object-cover w-full h-[250px] mx-auto" // Responsive utility classes
+                className="rounded-sm object-cover w-auto mx-auto" // Responsive utility classes
               />
             </Grid>
             <Grid item sm={12} md={12} lg={12}>
