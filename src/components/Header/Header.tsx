@@ -40,11 +40,10 @@ const Header: React.FC = () => {
   const isAdmin = useRole(Role.ADMIN);
 
   const logOut = async () => {
+    handleClose();
+    dispatch(logout());
     const { status } = await axiosAuth("/auth/logout");
-    if (status === 200) {
-      handleClose();
-      dispatch(logout());
-    }
+    console.log(status);
   };
   const handleClose = () => {
     setAnchorEl(null);

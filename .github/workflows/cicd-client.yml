@@ -1,5 +1,6 @@
 name: CD/CD-client
-
+env:
+  NEXT_PUBLIC_API_DOMAIN: ${{vars.NEXT_PUBLIC_API_DOMAIN}}
 on:
   push:
     branches:
@@ -14,7 +15,7 @@ jobs:
       - name: 'Create env file'
         run: |
           touch .env
-          echo NEXT_PUBLIC_API_DOMAIN="${{ secrets.NEXT_PUBLIC_API_DOMAIN }}" >> .env
+          echo NEXT_PUBLIC_API_DOMAIN="${{ secrets.NEXT_PUBLIC_API_DOMAIN }}" >> .env.local
       #     cat .env
       - name: build image
         run: docker build -t upalmofficial/u-palm-client .
