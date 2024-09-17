@@ -34,7 +34,6 @@ const Header: React.FC = () => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const dispatch = useAppDispatch();
   const axiosAuth = useAxiosAuth();
 
   const isAdmin = useRole(Role.ADMIN);
@@ -43,7 +42,6 @@ const Header: React.FC = () => {
     const { status } = await axiosAuth("/auth/logout");
     if (status === 200) {
       handleClose();
-      dispatch(logout());
       logoutContext();
     }
   };
