@@ -23,6 +23,7 @@ import IconLogout from "@mui/icons-material/Logout";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 import { useRouter } from "next/navigation";
+import Loading from "@/app/loging";
 
 const Header: React.FC = () => {
   const { isAuthenticated, loading, logout: logoutContext } = useAuth();
@@ -52,6 +53,9 @@ const Header: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  if (loading) {
+    return <Loading/>
+  }
 
   return (
     <>
