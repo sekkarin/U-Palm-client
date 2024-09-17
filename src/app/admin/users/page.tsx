@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Breadcrumbs,
   Button,
@@ -13,9 +13,6 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import useRole from "@/libs/hooks/useRole";
-import { Role } from "@/constants/enums/Role";
-import { useAuth } from "@/contexts/AuthProvider";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
 import { useQuery } from "@tanstack/react-query";
@@ -23,6 +20,7 @@ import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import Paper from "@mui/material/Paper";
 import Link from "next/link";
 import Layout from "@/components/Admin/Layout";
+import { IUser } from "@/interfaces/user.interface";
 
 export default function ManageUser() {
   const axiosAuth = useAxiosAuth();
@@ -41,7 +39,8 @@ export default function ManageUser() {
   const handlerViewUser = (user_id: string) => {
     router.push("./users/" + user_id);
   };
-
+    console.log(data);
+    
   return (
     <Layout>
       <Breadcrumbs aria-label="breadcrumb">
@@ -65,7 +64,7 @@ export default function ManageUser() {
           </TableHead>
           <TableBody>
             {data &&
-              data.data.map((row: any) => (
+              data?.data?.map((row:IUser) => (
                 <TableRow
                   key={row.user_id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

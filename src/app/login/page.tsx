@@ -7,7 +7,6 @@ import {
   FormControl,
   Input,
   InputAdornment,
-  InputBase,
 } from "@mui/material";
 import Link from "next/link";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -44,8 +43,6 @@ export default function Login() {
       });
 
       if (status === 200) {
-        console.log(data);
-
         dispatch(
           setCredential({ access_token: data.access_token, ...data.user })
         );

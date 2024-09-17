@@ -1,12 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Layout from "@/components/Admin/Layout";
 import { Loading } from "@/components/Loading";
-import { Supplier } from "@/interfaces/Supplier";
+import { ISupplier } from "@/interfaces/supplier.interface";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { Box, Breadcrumbs, Typography, Divider, Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function DetailSupplier({ params }: { params: { id: string } }) {
   const axiosAuth = useAxiosAuth();
@@ -15,7 +16,7 @@ export default function DetailSupplier({ params }: { params: { id: string } }) {
     data: supplier,
     isLoading,
     isError,
-  } = useQuery<Supplier>({
+  } = useQuery<ISupplier>({
     queryKey: ["get-supplier", params.id],
     queryFn: async () => (await axiosAuth.get(`/suppliers/${params.id}`)).data,
   });
@@ -127,10 +128,11 @@ export default function DetailSupplier({ params }: { params: { id: string } }) {
         <Typography variant="h6">Profile Image</Typography>
         {supplier?.profileImage && (
           <Box mt={2}>
-            <img
+            <Image
               src={supplier.profileImage}
               alt={`${supplier.name} profile`}
-              style={{ maxWidth: "200px", maxHeight: "200px" }}
+              width={200}
+              height={200}
             />
           </Box>
         )}

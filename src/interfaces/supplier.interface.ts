@@ -6,7 +6,7 @@ interface ContactPerson {
     con_remark: string;
   }
   
-export  interface Supplier {
+export  interface ISupplier {
     name: string;
     email: string;
     country: string;

@@ -16,7 +16,6 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-  Typography,
   IconButton,
 } from "@mui/material";
 import PersonAdd from "@mui/icons-material/PersonAdd";
@@ -27,14 +26,12 @@ import Badge from "@mui/material/Badge";
 
 const Header: React.FC = () => {
   const { isAuthenticated, loading } = useAuth();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const photo = useAppSelector((state) => state.auth.photo);
- 
+  const cart = useAppSelector((state) => state.cart);
 
   const open = Boolean(anchorEl);
-  const handleClick = (event: {
-    currentTarget: React.SetStateAction<null>;
-  }) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const dispatch = useAppDispatch();
@@ -83,11 +80,16 @@ const Header: React.FC = () => {
               >
                 {isAdmin && <Link href="/admin/overview">Admin</Link>}
 
-                <IconButton>
-                  <Badge badgeContent={4} color="primary">
-                    <ShoppingCartOutlinedIcon />
-                  </Badge>
-                </IconButton>
+                <Link href={"../cart"}>
+                  <IconButton>
+                    <Badge
+                      badgeContent={cart.items ? cart.items.length : 0}
+                      color="primary"
+                    >
+                      <ShoppingCartOutlinedIcon />
+                    </Badge>
+                  </IconButton>
+                </Link>
                 <Tooltip title="Account settings">
                   <IconButton
                     onClick={handleClick}

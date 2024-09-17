@@ -8,8 +8,8 @@ import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import AppsIcon from "@mui/icons-material/Apps";
 import { useAppDispatch, useAppSelector } from "@/libs/hook";
-import { useAuth } from "@/contexts/AuthProvider";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { logout } from "@/libs/features/auth/authSlice";
 import IconLogout from "@mui/icons-material/Logout";
@@ -25,6 +25,7 @@ import {
   MenuItem,
   Tooltip,
 } from "@mui/material";
+import Link from "next/link";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -52,13 +53,11 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const AdminAppBar: React.FC<AppBarProps> = ({ open, toggleDrawer }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const phot = useAppSelector((state) => state.auth.photo);
 
   const openMenu = Boolean(anchorEl);
-  const handleClick = (event: {
-    currentTarget: React.SetStateAction<null>;
-  }) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const dispatch = useAppDispatch();
@@ -109,6 +108,11 @@ const AdminAppBar: React.FC<AppBarProps> = ({ open, toggleDrawer }) => {
         >
           U Palm Admin
         </Typography>
+        <IconButton color="inherit">
+          <Link href={"/"}>
+            <AppsIcon />
+          </Link>
+        </IconButton>
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
             <NotificationsIcon />

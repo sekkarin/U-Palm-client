@@ -1,13 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 import Image from "next/image";
-import {
-  Fade,
-  FormControl,
-  Input,
-  InputAdornment,
-  Snackbar,
-} from "@mui/material";
+import { Fade, FormControl, Input, InputAdornment } from "@mui/material";
 import Link from "next/link";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -17,8 +11,6 @@ import Header from "@/components/Header";
 import api from "@/services/api";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
-import { useAppDispatch } from "@/libs/hook";
-import { setCredential } from "@/libs/features/auth/authSlice";
 import Alert from "@mui/material/Alert";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 
@@ -38,8 +30,6 @@ export default function Register() {
       process.env.NEXT_PUBLIC_API_DOMAIN + "/auth/google-redirect";
   };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("handleSubmit");
-
     try {
       event.preventDefault();
       setIsLoading(true);

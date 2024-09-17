@@ -32,7 +32,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
-import Link from "next/link";
+import { ISupplier } from "@/interfaces/supplier.interface";
 
 export default function Suppliers() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -67,7 +67,7 @@ export default function Suppliers() {
     },
     onSuccess(data) {
       if (data.status === 200) {
-        setSnackbarMessage("Supplier deleted successfully!");
+        setSnackbarMessage("Deleted successfully!");
         setIsError(false);
         setOpenSnackbar(true);
         queryClient.invalidateQueries({
@@ -87,15 +87,19 @@ export default function Suppliers() {
   const suppliersData = suppliers.data?.data;
 
   const createHandleMenuClick = (
-    menuItem: "edite" | "detail" | "delete",
+    menuItem: "edit" | "detail" | "delete",
     supplier_id: string
   ) => {
     return () => {
+      
+
       if (menuItem === "delete") {
         handleDeleteClick();
         setSupplierIdDelete(supplier_id);
-      } else if (menuItem === "edite") {
-        route.push("./edite-supplier");
+      } else if (menuItem === "edit") {
+        route.push("./suppliers/edit-supplier/" + supplier_id);
+      } else if (menuItem === "detail") {
+        route.push("./suppliers/" + supplier_id);
       }
     };
   };
@@ -154,7 +158,7 @@ export default function Suppliers() {
             size="small"
             onClick={handlerCreateSupplierClick}
           >
-            เพิ่ม supplier
+            Add Supplier
           </Button>
         </Box>
       </Box>
@@ -180,7 +184,7 @@ export default function Suppliers() {
           </TableHead>
           <TableBody>
             {suppliersData &&
-              suppliersData.map((row: any) => (
+              suppliersData.map((row: ISupplier) => (
                 <TableRow
                   key={row.supplier_id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -206,16 +210,18 @@ export default function Suppliers() {
                             "detail",
                             row.supplier_id
                           )}
-                          className="text-green-500 border-green-500 border-2 hover:bg-primary-200 p-2 rounded my-1"
+                          className="text-green-500 border-green-500 border-2 hover:bg-primary-200 p-2 rounded my-1 cursor-pointer"
                         >
-                          <Link href={`./suppliers/${row.supplier_id}`}>
-                            รายละเอียด
-                          </Link>
+                          รายละเอียด
                         </MenuItem>
-                        <MenuItem className="text-orange-500 border-orange-500 border-2 hover:bg-primary-200 p-2 rounded my-1">
-                          <Link href={`./suppliers/edit-supplier/${row.supplier_id}`}>
-                            แก้ใข
-                          </Link>
+                        <MenuItem
+                          onClick={createHandleMenuClick(
+                            "edit",
+                            row.supplier_id
+                          )}
+                          className="text-orange-500 border-orange-500 border-2 hover:bg-primary-200 p-2 rounded my-1 cursor-pointer"
+                        >
+                          แก้ใข
                         </MenuItem>
 
                         <MenuItem
@@ -223,7 +229,7 @@ export default function Suppliers() {
                             "delete",
                             row.supplier_id
                           )}
-                          className="bg-red-400 text-white border-red-500 border-2 hover:bg-primary-200 p-2 rounded my-1"
+                          className="bg-red-400 text-white border-red-500 border-2 hover:bg-primary-200 p-2 rounded my-1 cursor-pointer"
                         >
                           ลบ
                         </MenuItem>
