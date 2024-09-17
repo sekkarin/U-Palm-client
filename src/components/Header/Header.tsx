@@ -2,7 +2,8 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useAppSelector } from "@/libs/hook";
+import { useAppDispatch, useAppSelector } from "@/libs/hook";
+import { logout } from "@/libs/features/auth/authSlice";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import useRole from "@/libs/hooks/useRole";
 import { Role } from "@/constants/enums/Role";
@@ -23,10 +24,9 @@ import IconLogout from "@mui/icons-material/Logout";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 import { useRouter } from "next/navigation";
-import Loading from "@/app/loging";
 
 const Header: React.FC = () => {
-  const { isAuthenticated, loading, logout: logoutContext } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const photo = useAppSelector((state) => state.auth.photo);
   const cart = useAppSelector((state) => state.cart);
@@ -36,25 +36,22 @@ const Header: React.FC = () => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const dispatch = useAppDispatch();
   const axiosAuth = useAxiosAuth();
 
   const isAdmin = useRole(Role.ADMIN);
 
   const logOut = async () => {
     const { status } = await axiosAuth("/auth/logout");
-
     if (status === 200) {
-      logoutContext();
+      dispatch(logout());
       handleClose();
+      route.replace("/");
     }
-    route.refresh()
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-  if (loading) {
-    return <Loading />;
-  }
 
   return (
     <>
