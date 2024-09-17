@@ -46,7 +46,7 @@ const Header: React.FC = () => {
     if (status === 200) {
       logoutContext();
       handleClose();
-      route.replace("/");
+      route.refresh()
     }
   };
   const handleClose = () => {
