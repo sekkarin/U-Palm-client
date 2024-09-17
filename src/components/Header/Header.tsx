@@ -22,12 +22,14 @@ import Settings from "@mui/icons-material/Settings";
 import IconLogout from "@mui/icons-material/Logout";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
+import { useRouter } from "next/navigation";
 
 const Header: React.FC = () => {
   const { isAuthenticated, loading, logout: logoutContext } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const photo = useAppSelector((state) => state.auth.photo);
   const cart = useAppSelector((state) => state.cart);
+  const route = useRouter();
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,11 +42,11 @@ const Header: React.FC = () => {
   const logOut = async () => {
     const { status } = await axiosAuth("/auth/logout");
     console.log(status);
-    
+
     if (status === 200) {
-      
       handleClose();
       logoutContext();
+      route.replace("/");
     }
   };
   const handleClose = () => {
