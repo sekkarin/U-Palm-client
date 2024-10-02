@@ -29,7 +29,6 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ data }) => {
   for (let i = 0; i < data.length; i += itemsPerSlide) {
     chunkedData.push(data.slice(i, i + itemsPerSlide));
   }
-  
 
   return (
     <Carousel duration={10} navButtonsAlwaysVisible>
@@ -42,7 +41,12 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ data }) => {
             <Link href={`./products/${item.product_id}`} key={i}>
               <Card
                 key={i}
-                sx={{ maxWidth: 345, margin: "0 auto", width: 250 }}
+                sx={{
+                  maxWidth: 345,
+                  margin: "0 auto",
+                  width: 250,
+                  height: 270,
+                }}
               >
                 <CardActionArea>
                   <CardMedia

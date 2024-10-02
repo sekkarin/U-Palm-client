@@ -20,8 +20,6 @@ import CategoryIcon from "@mui/icons-material/Category";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Collapse, ListItemButton } from "@mui/material";
 
 const drawerWidth = 240;
@@ -103,8 +101,8 @@ const Menus = [
             <ListItemIcon>
               <InventoryIcon />
             </ListItemIcon>
-            <ListItemText primary="Manage Products" />
-            {openCollapseProduct ? <ExpandLess /> : <ExpandMore />}
+            <ListItemText primary="Manage Products"  />
+            
           </ListItemButton>
           <Collapse in={openCollapseProduct} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
