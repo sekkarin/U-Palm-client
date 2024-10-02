@@ -32,7 +32,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { IProduct } from "@/interfaces/product.interface";
 import Image from "next/image";
 import ProductDropdownMenu from "@/components/Admin/ButtonMenuProduct";
-import useCart from "@/libs/hooks/useCart";
 
 export default function Products() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -45,7 +44,6 @@ export default function Products() {
 
   const axiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
-  const fetchCart = useCart();
 
   const mutation = useMutation({
     mutationFn: (supplier_id: string) => {
@@ -72,9 +70,6 @@ export default function Products() {
         setSnackbarMessage("Products deleted successfully!");
         setIsError(false);
         setOpenSnackbar(true);
-        (async () => {
-          await fetchCart();
-        })();
         queryClient.invalidateQueries({
           queryKey: ["get-all-products"],
           exact: true,
