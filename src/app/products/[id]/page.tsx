@@ -26,7 +26,7 @@ import Carousel from "react-material-ui-carousel";
 import DOMPurify from "dompurify";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import { useAppDispatch } from "@/libs/hook";
+import { useAppDispatch, useAppSelector } from "@/libs/hook";
 import { initialCart } from "@/libs/features/cart/cartSlice";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { Cart } from "@/interfaces/cart.interface";
@@ -55,8 +55,10 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
   const axiosAuth = useAxiosAuth();
 
   const dispatch = useAppDispatch();
+  const userID = useAppSelector((state) => state.auth.id);
   const route = useRouter();
   const mutation = useMutation({
+    mutationKey: [`cart-${userID}`],
     mutationFn: async (body: Body) => {
       return await axiosAuth.post<Cart>("/carts", body);
     },
@@ -65,7 +67,6 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     },
     onSuccess(data) {
       const itemCart = data.data.items.flat();
-   
 
       itemCart.map((item) =>
         dispatch(
@@ -86,8 +87,6 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
       route.replace("../login");
     }
     if (!selectedOption?.item_id || !selectedOption.variation_id || !quantity) {
-      
-
       return;
     }
     mutation.mutate({
@@ -167,12 +166,13 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
   if (productQuery.isLoading || loading) {
     return <Loading />;
   }
-
+  if (productQuery.error) {
+    throw new Error();
+  }
 
   return (
     <>
       <Header />
-
       <Container maxWidth={"lg"} className="mt-[110px]">
         <Breadcrumbs aria-label="breadcrumb" className="my-4">
           <Link color="inherit" href="/">
@@ -193,7 +193,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                 width={970}
                 height={250}
                 alt={"image_banner_adverting" + product.name}
-                className="rounded-sm object-cover w-auto mx-auto" // Responsive utility classes
+                className="rounded-sm object-cover  mx-auto" // Responsive utility classes
               />
             </Grid>
             <Grid item sm={12} md={12} lg={12}>

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/libs/hook";
@@ -24,6 +24,7 @@ import IconLogout from "@mui/icons-material/Logout";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 import { useRouter } from "next/navigation";
+import useCart from "@/libs/hooks/useCart";
 
 const Header: React.FC = () => {
   const { isAuthenticated, loading } = useAuth();
@@ -38,6 +39,7 @@ const Header: React.FC = () => {
   };
   const dispatch = useAppDispatch();
   const axiosAuth = useAxiosAuth();
+  const fetchCart = useCart();
 
   const isAdmin = useRole(Role.ADMIN);
 
@@ -52,7 +54,14 @@ const Header: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  useEffect(() => {
+    if (isAuthenticated) {
+      (async () => {
+        await fetchCart();
+      })();
+    }
+    
+  }, [isAuthenticated]);
   return (
     <>
       <div className="flex flex-col w-[100%] fixed top-[0px] z-[10] shadow-md">
