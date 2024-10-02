@@ -134,6 +134,7 @@ export default function CreateProduct() {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        timeout: 5 * 60 * 1000,
       });
     },
     onError: (error) => {
