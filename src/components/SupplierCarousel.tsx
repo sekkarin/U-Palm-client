@@ -41,7 +41,12 @@ const SupplierCarousel: React.FC<SupplierCarouselProps> = ({ data }) => {
             <Link href={`#`} key={i}>
               <Card
                 key={i}
-                sx={{ maxWidth: 450, margin: "0 auto", width: 250 }}
+                sx={{
+                  maxWidth: 450,
+                  margin: "0 auto",
+                  width: 250,
+                  height: 270,
+                }}
               >
                 <CardActionArea>
                   <CardMedia

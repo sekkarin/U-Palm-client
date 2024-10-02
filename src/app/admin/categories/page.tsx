@@ -24,15 +24,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
 import SearchIcon from "@mui/icons-material/Search";
-import { Dropdown } from "@mui/base/Dropdown";
-import { MenuButton } from "@mui/base/MenuButton";
-import { Menu } from "@mui/base/Menu";
-import { MenuItem } from "@mui/base/MenuItem";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
 import { ICategory } from "@/interfaces/category.interface";
+import CategoryDropdownMenu from "@/components/Admin/ButtonMenuCategory";
 
 export default function Category() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -66,6 +62,8 @@ export default function Category() {
       setOpenSnackbar(true);
     },
     onSuccess(data) {
+      console.log(data.status);
+      
       if (data.status === 200) {
         setSnackbarMessage("Deleted successfully!");
         setIsError(false);
@@ -87,17 +85,17 @@ export default function Category() {
   const categoriesData = categories.data?.data;
 
   const createHandleMenuClick = (
-    menuItem: "edit" |  "delete",
+    menuItem: "edit" | "delete",
     supplier_id: string
   ) => {
-    return () => {
-      if (menuItem === "delete") {
-        handleDeleteClick();
-        setCategoryIdDelete(supplier_id);
-      } else if (menuItem === "edit") {
-        route.push("./categories/edit-category/" + supplier_id);
-      } 
-    };
+    if (menuItem === "delete") {
+      handleDeleteClick();
+      setCategoryIdDelete(supplier_id);
+    } else if (menuItem === "edit") {
+      console.log("edit");
+
+      route.push("./categories/edit-category/" + supplier_id);
+    }
   };
   const handlerCreateCategoryClick = () => {
     route.push("./categories/create-category");
@@ -185,7 +183,11 @@ export default function Category() {
                     {row.parent_category_id ? row.parent_category_id : "ไม่มี"}
                   </TableCell>
                   <TableCell align="left">
-                    <Dropdown>
+                    <CategoryDropdownMenu
+                      categoryId={row.categoryId}
+                      createHandleMenuClick={createHandleMenuClick}
+                    />
+                    {/* <Dropdown>
                       <MenuButton className="flex bg-primary-500 rounded-sm p-2 text-white hover:bg-primary-300">
                         Action <ArrowDropDownIcon />
                       </MenuButton>
@@ -209,7 +211,7 @@ export default function Category() {
                           ลบ
                         </MenuItem>
                       </Menu>
-                    </Dropdown>
+                    </Dropdown> */}
                   </TableCell>
                 </TableRow>
               ))}

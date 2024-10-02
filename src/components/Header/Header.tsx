@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/libs/hook";
@@ -23,12 +23,15 @@ import Settings from "@mui/icons-material/Settings";
 import IconLogout from "@mui/icons-material/Logout";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
+import { useRouter } from "next/navigation";
+import useCart from "@/libs/hooks/useCart";
 
 const Header: React.FC = () => {
   const { isAuthenticated, loading } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const photo = useAppSelector((state) => state.auth.photo);
   const cart = useAppSelector((state) => state.cart);
+  const route = useRouter();
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,19 +39,29 @@ const Header: React.FC = () => {
   };
   const dispatch = useAppDispatch();
   const axiosAuth = useAxiosAuth();
+  const fetchCart = useCart();
 
   const isAdmin = useRole(Role.ADMIN);
 
   const logOut = async () => {
-    handleClose();
-    dispatch(logout());
     const { status } = await axiosAuth("/auth/logout");
-    console.log(status);
+    if (status === 200) {
+      dispatch(logout());
+      handleClose();
+      route.replace("/");
+    }
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  useEffect(() => {
+    if (isAuthenticated) {
+      (async () => {
+        await fetchCart();
+      })();
+    }
+    
+  }, [isAuthenticated]);
   return (
     <>
       <div className="flex flex-col w-[100%] fixed top-[0px] z-[10] shadow-md">

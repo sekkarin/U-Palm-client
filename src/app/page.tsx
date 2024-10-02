@@ -68,10 +68,10 @@ export default function Home() {
           </div>
           <Image
             src={
-              "/images/The-Borneo-Post-Sustainable-Palm-Oil-Communities-of-Sabah-and-Sarawak-01.jpg"
+              "/images/image3.jpg"
             }
             fill={true}
-            className="object-cover brightness-75"
+            className="object-cover brightness-[.5] blur-sm"
             alt={"Palm-Oil"}
           ></Image>
         </div>

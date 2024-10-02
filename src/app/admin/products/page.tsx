@@ -25,17 +25,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
 import SearchIcon from "@mui/icons-material/Search";
-import { Dropdown } from "@mui/base/Dropdown";
-import { MenuButton } from "@mui/base/MenuButton";
-import { Menu } from "@mui/base/Menu";
-import { MenuItem } from "@mui/base/MenuItem";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
 import Link from "next/link";
 import AddIcon from "@mui/icons-material/Add";
 import { IProduct } from "@/interfaces/product.interface";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Image from "next/image";
+import ProductDropdownMenu from "@/components/Admin/ButtonMenuProduct";
+import useCart from "@/libs/hooks/useCart";
 
 export default function Products() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -48,6 +45,7 @@ export default function Products() {
 
   const axiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
+  const fetchCart = useCart();
 
   const mutation = useMutation({
     mutationFn: (supplier_id: string) => {
@@ -74,6 +72,9 @@ export default function Products() {
         setSnackbarMessage("Products deleted successfully!");
         setIsError(false);
         setOpenSnackbar(true);
+        (async () => {
+          await fetchCart();
+        })();
         queryClient.invalidateQueries({
           queryKey: ["get-all-products"],
           exact: true,
@@ -301,7 +302,12 @@ export default function Products() {
                     <TableCell align="left">{row.name}</TableCell>
 
                     <TableCell align="right">
-                      <Dropdown>
+                      <ProductDropdownMenu
+                        product_id={row.product_id}
+                        handleDeleteClick={handleDeleteClick}
+                        setProductIdDeleteIdDelete={setProductIdDeleteIdDelete}
+                      />
+                      {/* <Dropdown>
                         <MenuButton className="hover:bg-primary-100 hover:rounded-full ">
                           <MoreVertIcon />
                         </MenuButton>
@@ -332,7 +338,7 @@ export default function Products() {
                             Delete
                           </MenuItem>
                         </Menu>
-                      </Dropdown>
+                      </Dropdown> */}
                     </TableCell>
                   </TableRow>
                 ))}

@@ -66,8 +66,8 @@ const AdminAppBar: React.FC<AppBarProps> = ({ open, toggleDrawer }) => {
   const logOut = async () => {
     const { status } = await axiosAuth("/auth/logout");
     if (status === 200) {
-      handleClose();
       dispatch(logout());
+      handleClose();
     }
   };
   const handleClose = () => {
