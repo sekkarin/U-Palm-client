@@ -45,16 +45,15 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ data }) => {
                   maxWidth: 345,
                   margin: "0 auto",
                   width: 250,
-                  height: 270,
+                  height: 345,
                 }}
               >
                 <CardActionArea>
                   <CardMedia
                     component="img"
-                    height="140"
                     image={item.product_image[0]}
                     alt={item.name}
-                    className="rounded-lg"
+                    className="rounded-lg h-52 object-contain"
                   />
 
                   <CardContent>

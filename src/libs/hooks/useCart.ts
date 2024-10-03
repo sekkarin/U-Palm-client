@@ -1,6 +1,4 @@
-import { AxiosError } from "axios";
 import { useAppDispatch } from "../hook";
-import { logout } from "../features/auth/authSlice";
 import useAxiosAuth from "./useAxiosAuth";
 import { Cart } from "@/interfaces/cart.interface";
 import { clearCart, initialCart } from "../features/cart/cartSlice";
@@ -28,13 +26,8 @@ const useCart = () => {
       );
 
     
-    } catch (err: unknown) {
-      if (err instanceof AxiosError) {
-        dispatch(logout());
-        // Cookies.remove("refresh_token");
-        // navigate("/session-expired");
-      }
-      return null;
+    } catch (err) {
+      return err;
     }
   };
   return fetchCart;

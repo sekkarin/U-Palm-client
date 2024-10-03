@@ -42,19 +42,18 @@ const SupplierCarousel: React.FC<SupplierCarouselProps> = ({ data }) => {
               <Card
                 key={i}
                 sx={{
-                  maxWidth: 450,
+                  maxWidth: 345,
                   margin: "0 auto",
                   width: 250,
-                  height: 270,
+                  height: 350,
                 }}
               >
                 <CardActionArea>
                   <CardMedia
                     component="img"
-                    height="140"
                     image={item.profileImage}
                     alt={item.name}
-                    className="rounded-lg"
+                    className="rounded-lg h-52 object-contain"
                   />
 
                   <CardContent>
