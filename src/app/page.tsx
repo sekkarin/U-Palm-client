@@ -7,11 +7,12 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import dynamic from "next/dynamic";
 import ProductCarousel from "@/components/ProductCarousel";
-import { IProduct } from "@/interfaces/product.interface";
+import { ProductResponse } from "@/interfaces/product.interface";
 import { Box } from "@mui/material";
 import { Loading } from "@/components/Loading";
 import SupplierCarousel from "@/components/SupplierCarousel";
 import { ISupplier } from "@/interfaces/supplier.interface";
+import React from "react";
 
 // Dynamically import the carousel skeleton loader to avoid SSR issues
 const ProductCarouselSkeleton = dynamic(
@@ -22,7 +23,7 @@ const ProductCarouselSkeleton = dynamic(
 );
 
 export default function Home() {
-  const productsQuery = useQuery<IProduct[]>({
+  const productsQuery = useQuery<ProductResponse>({
     queryKey: ["Product-landing-page"],
     queryFn: () => getProducts(),
     refetchInterval: 1000 * 60 * 60 * 5,
@@ -53,23 +54,30 @@ export default function Home() {
                   แพลตฟอร์มการขายสินค้าเกี่ยวกับปาล์มอันดับ 1
                 </div>
                 {/* search product input*/}
-                <div className="mt-4 flex rounded-md p-[1.5px] gap-1">
-                  <input
-                    type="text"
-                    placeholder="ค้นหาสิ่งที่คุณต้อง..."
-                    className="w-[480px] focus:outline-none pl-3 text-[12.5px] h-[40px] rounded-sm border-[1px] border-[#fff] shadow-inner text-[#000]"
-                  ></input>
-                  <button className="bg-secondary-500  w-[50px] text-[20px] text-[#3e3e3e] hover:bg-secondary-400 transition-all flex items-center justify-center rounded-sm h-[40px]">
-                    <SearchIcon />
-                  </button>
-                </div>
+                <form action={"./search"}>
+                  <div className="mt-4 flex rounded-md p-[1.5px] gap-1">
+                    <input
+                      // onChange={(e) => {
+                      //   setQuerySearch(e.target.value);
+                      // }}
+                      name={"query"}
+                      type="text"
+                      placeholder="ค้นหาสินค้าที่คุณต้อง..."
+                      className="w-[480px] focus:outline-none pl-3 text-[12.5px] h-[40px] rounded-sm border-[1px] border-[#fff] shadow-inner text-[#000]"
+                    ></input>
+                    <button
+                      type="submit"
+                      className="bg-secondary-500  w-[50px] text-[20px] text-[#3e3e3e] hover:bg-secondary-400 transition-all flex items-center justify-center rounded-sm h-[40px]"
+                    >
+                      <SearchIcon />
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
           <Image
-            src={
-              "/images/image3.jpg"
-            }
+            src={"/images/image3.jpg"}
             fill={true}
             className="object-cover brightness-[.5] blur-sm"
             alt={"Palm-Oil"}
@@ -86,8 +94,8 @@ export default function Home() {
             {productsQuery.isLoading ? (
               <ProductCarouselSkeleton />
             ) : (
-              productsQuery.data && (
-                <ProductCarousel data={productsQuery.data} />
+              productsQuery.data?.data && (
+                <ProductCarousel data={productsQuery.data.data} />
               )
             )}
           </div>

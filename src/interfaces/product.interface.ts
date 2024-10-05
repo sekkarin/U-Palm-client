@@ -31,3 +31,15 @@ export interface IProduct {
   createdAt: string;
   product_id: string | undefined;
 }
+interface Metadata {
+  page: number;
+  limit: number;
+  itemCount: number;
+  pageCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+export interface ProductResponse {
+  data: IProduct[];
+  metadata: Metadata;
+}

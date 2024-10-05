@@ -150,7 +150,7 @@ const Header: React.FC = () => {
                 หน้าหลัก
               </Link>
               <Link
-                href={"/"}
+                href={"/products"}
                 className="hover:text-secondary-500 transition-all"
               >
                 สินค้าทั้งหมด
