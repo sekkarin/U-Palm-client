@@ -32,6 +32,7 @@ import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { Cart } from "@/interfaces/cart.interface";
 import { useAuth } from "@/contexts/AuthProvider";
 import { useRouter } from "next/navigation";
+import React from "react";
 
 interface Body {
   product_item_id: string;
@@ -186,8 +187,8 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
           </Typography>
         </Breadcrumbs>
         {product && (
-          <Grid container spacing={1}>
-            <Grid item sm={12} md={12} lg={12}>
+          <Grid container>
+            <Grid item xs={12} sm={12} md={12} lg={12}>
               <Image
                 src={product.image_banner_adverting}
                 width={970}
@@ -196,11 +197,11 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                 className="rounded-sm object-cover  mx-auto" // Responsive utility classes
               />
             </Grid>
-            <Grid item sm={12} md={12} lg={12}>
+            <Grid item xs={12} sm={12} md={12} lg={12}>
               {/* detail product */}
               <Paper elevation={4} className="p-2 rounded-md">
                 <Grid container spacing={2}>
-                  <Grid item sm={12} md={7} className="w-[300] h-full">
+                  <Grid item xs={12} sm={12} md={7} className="w-[300] h-full">
                     <Carousel navButtonsAlwaysVisible={true}>
                       {product.product_image.map((image, i) => (
                         <ImageListItem
@@ -212,14 +213,14 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                             width={250}
                             height={250}
                             alt={product.name}
-                            className="mx-auto cursor-pointer"
+                            className="mx-auto cursor-pointer object-contain"
                             loading="lazy"
                           />
                         </ImageListItem>
                       ))}
                     </Carousel>
                   </Grid>
-                  <Grid item sm={12} md={5} className="w-64 h-full">
+                  <Grid item xs={12} sm={12} md={5} className="w-64 h-full">
                     <Typography variant="h5">{product?.name}</Typography>
                     <Typography variant="body2">
                       ราคา{" "}
@@ -320,12 +321,11 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                     </Stack>
                     <Box
                       sx={{
-                        // border: "1px solid black",
                         padding: 2,
-                        display: "inline-block",
-
-                        // backgroundColor: "#F0F0F0",
+                        width: "100%",
+                        display: "flex",   
                       }}
+                      className="sm:justify-start justify-center"
                     >
                       <Box
                         sx={{

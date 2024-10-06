@@ -211,6 +211,7 @@ export default function EditProduct({ params }: { params: { id: string } }) {
     Object.entries(formValues).forEach(([key, value]) => {
       if (value !== null) formData.append(key, value as string);
     });
+
     if (items) {
       items.forEach((item, itemIndex) => {
         formData.append(`items[${itemIndex}][base_price]`, item.base_price);
@@ -258,6 +259,7 @@ export default function EditProduct({ params }: { params: { id: string } }) {
     value: Option | null
   ) => {
     setSelectedSupplier(value);
+
     if (value) {
       setFormValues({ ...formValues, supplier_id: value?.id });
     }
@@ -308,9 +310,6 @@ export default function EditProduct({ params }: { params: { id: string } }) {
       if (searchTerm) {
         setLoading(true);
         try {
-          // await axiosAuth.get("/suppliers"))
-          console.log("search api");
-
           const response = await axiosAuth.get<CategoriesResponse>(
             `/categories`,
             {
@@ -393,6 +392,19 @@ export default function EditProduct({ params }: { params: { id: string } }) {
       },
     ]);
   };
+  useEffect(() => {
+    if (productQuery.isSuccess && productQuery.data) {
+      setSelectedSupplier({
+        id: productQuery.data.supplier_id.supplier_id,
+        label: productQuery.data.supplier_id.name,
+      });
+      setSelectedCategory({
+        id: productQuery.data.category_id.categoryId,
+        label: productQuery.data.category_id.category_name,
+      });
+      initialForm(productQuery.data);
+    }
+  }, [productQuery.data, productQuery.isSuccess]);
 
   useEffect(() => {
     if (inputSupplierValue !== "") {
@@ -423,9 +435,6 @@ export default function EditProduct({ params }: { params: { id: string } }) {
           };
         })
       );
-      if (productQuery.isSuccess && productQuery.data) {
-        initialForm(productQuery.data);
-      }
     }
   }, [
     categoriesQuery.data,
@@ -440,6 +449,7 @@ export default function EditProduct({ params }: { params: { id: string } }) {
     productQuery.data,
     productQuery.isSuccess,
   ]);
+
   if (
     suppliersQuery.isLoading ||
     categoriesQuery.isLoading ||
@@ -484,6 +494,7 @@ export default function EditProduct({ params }: { params: { id: string } }) {
               my: 1,
             }}
           />
+
           <Autocomplete
             options={supplierOption}
             getOptionLabel={(option) => option.label}
