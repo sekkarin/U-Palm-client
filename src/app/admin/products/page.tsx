@@ -29,7 +29,7 @@ import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { AxiosError } from "axios";
 import Link from "next/link";
 import AddIcon from "@mui/icons-material/Add";
-import { IProduct } from "@/interfaces/product.interface";
+import { ProductResponse } from "@/interfaces/product.interface";
 import Image from "next/image";
 import ProductDropdownMenu from "@/components/Admin/ButtonMenuProduct";
 
@@ -78,13 +78,13 @@ export default function Products() {
     },
   });
 
-  const productsQuery = useQuery<IProduct[]>({
+  const productsQuery = useQuery<ProductResponse>({
     queryKey: ["get-all-products"],
     queryFn: async () => (await axiosAuth.get("/products")).data,
     refetchInterval: 1000 * 60 * 60 * 5,
   });
 
-  const products = productsQuery.data;
+  const products = productsQuery.data?.data;
 
   const handleDeleteClick = () => {
     setIsDialogOpen(true);
