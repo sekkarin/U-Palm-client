@@ -12,7 +12,7 @@ import { Box } from "@mui/material";
 import { Loading } from "@/components/Loading";
 import SupplierCarousel from "@/components/SupplierCarousel";
 import { ISupplier } from "@/interfaces/supplier.interface";
-import React from "react";
+import React, { Suspense } from "react";
 
 // Dynamically import the carousel skeleton loader to avoid SSR issues
 const ProductCarouselSkeleton = dynamic(
@@ -54,25 +54,27 @@ export default function Home() {
                   แพลตฟอร์มการขายสินค้าเกี่ยวกับปาล์มอันดับ 1
                 </div>
                 {/* search product input*/}
-                <form action={"./search"}>
-                  <div className="mt-4 flex rounded-md p-[1.5px] gap-1">
-                    <input
-                      // onChange={(e) => {
-                      //   setQuerySearch(e.target.value);
-                      // }}
-                      name={"query"}
-                      type="text"
-                      placeholder="ค้นหาสินค้าที่คุณต้อง..."
-                      className="w-[480px] focus:outline-none pl-3 text-[12.5px] h-[40px] rounded-sm border-[1px] border-[#fff] shadow-inner text-[#000]"
-                    ></input>
-                    <button
-                      type="submit"
-                      className="bg-secondary-500  w-[50px] text-[20px] text-[#3e3e3e] hover:bg-secondary-400 transition-all flex items-center justify-center rounded-sm h-[40px]"
-                    >
-                      <SearchIcon />
-                    </button>
-                  </div>
-                </form>
+                <Suspense>
+                  <form action={"./search"}>
+                    <div className="mt-4 flex rounded-md p-[1.5px] gap-1">
+                      <input
+                        // onChange={(e) => {
+                        //   setQuerySearch(e.target.value);
+                        // }}
+                        name={"query"}
+                        type="text"
+                        placeholder="ค้นหาสินค้าที่คุณต้อง..."
+                        className="w-[480px] focus:outline-none pl-3 text-[12.5px] h-[40px] rounded-sm border-[1px] border-[#fff] shadow-inner text-[#000]"
+                      ></input>
+                      <button
+                        type="submit"
+                        className="bg-secondary-500  w-[50px] text-[20px] text-[#3e3e3e] hover:bg-secondary-400 transition-all flex items-center justify-center rounded-sm h-[40px]"
+                      >
+                        <SearchIcon />
+                      </button>
+                    </div>
+                  </form>
+                </Suspense>
               </div>
             </div>
           </div>

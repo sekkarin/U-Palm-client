@@ -13,41 +13,44 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ProductResponse } from "@/interfaces/product.interface";
 import { getProducts } from "@/libs/getProducts";
 import { Loading } from "@/components/Loading";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function Search() {
   const [page, setPage] = React.useState(1);
 
   const searchParams = useSearchParams();
-  const querySearch = searchParams.get("query") || "";
+  // const params = useParams()
+  const querySearch = useParams<{ query: string }>();
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
   const productQuery = useQuery<ProductResponse>({
     queryKey: ["products", page],
-    queryFn: async () => await getProducts(page, querySearch),
+    queryFn: async () => await getProducts(page, querySearch.query),
     refetchInterval: 1000 * 60 * 60 * 5,
   });
   const route = useRouter();
   if (productQuery.isLoading) {
     return <Loading />;
   }
-  console.log(productQuery.data);
-  console.log(page, searchParams.get("query"));
+  console.log(searchParams.get("query"));
 
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <Header />
       <Container maxWidth={"lg"} className="mt-[110px] min-h-dvh">
-        <Typography variant="h5">ค้นหาสินค้า {querySearch}</Typography>
+        <Typography variant="h5">ค้นหาสินค้า {querySearch.query}</Typography>
         <Divider className="my-2" />
         {productQuery.data?.data && productQuery.data?.data.length < 1 && (
-          <Typography variant="h2" className="text-center">ไม่มีผลลัพธ์</Typography>
+          <Typography variant="h2" className="text-center">
+            ไม่มีผลลัพธ์
+          </Typography>
         )}
         <Grid container spacing={2}>
           {productQuery.data?.data &&
@@ -140,6 +143,6 @@ export default function Search() {
         )}
       </Container>
       <Footer />
-    </>
+    </Suspense>
   );
 }
