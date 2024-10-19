@@ -24,8 +24,6 @@ export default function LayoutAdmin({
     setOpen(!open);
   };
   useEffect(() => {
-    console.log({loading,isAdmin});
-    
     if (!isAdmin && !loading) {
       router.push("/deny");
     }
