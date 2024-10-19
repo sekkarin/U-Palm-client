@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, CssBaseline } from "@mui/material";
 import AdminAppBar from "@/components/Admin/Header";
 import AdminDrawer from "@/components/Admin/Drawer";
@@ -20,17 +20,17 @@ export default function LayoutAdmin({
 
   const router = useRouter();
   const { loading } = useAuth();
-
-  if (loading) {
-    return <Loading />; // Show a loading state while checking the role
-  }
-
-  if (!isAdmin) {
-    router.push("/deny");
-  }
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  useEffect(() => {
+    if (!isAdmin && !loading) {
+      router.push("/deny");
+    }
+  }, []);
+  if (loading) {
+    return <Loading />; // Show a loading state while checking the role
+  }
 
   return (
     <Box sx={{ display: "flex" }}>

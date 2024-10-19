@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 type Prop = {
   product_id: string | undefined;
   setProductIdDeleteIdDelete: (product_id: string | undefined) => void;
@@ -16,6 +16,8 @@ export default function ProductDropdownMenu({
   setProductIdDeleteIdDelete,
 }: Prop) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const route = useRouter();
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -32,8 +34,7 @@ export default function ProductDropdownMenu({
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        className="hover:bg-primary-100"
-
+        className=" bg-primary-500 rounded-sm p-2 text-white hover:bg-primary-300 justify-center"
       >
         Action <ArrowDropDownIcon />
       </Button>
@@ -45,19 +46,43 @@ export default function ProductDropdownMenu({
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
+        className="p-0 m-0"
       >
-        <MenuItem className=" hover:bg-neutral-100 my-2">
-          <Link href={`../products/${product_id}`} className="p-2 w-5 h-6">
-            View
-          </Link>
+        <MenuItem
+          className="text-green-500  hover:bg-primary-200"
+          sx={{
+            border: 2,
+            borderColor: " #22c55e",
+            borderRadius: "4px",
+            textAlign:"center",
+          }}
+          onClick={() => {
+            route.push(`../products/${product_id}`);
+          }}
+        >
+          View
         </MenuItem>
-        <MenuItem className=" hover:bg-neutral-100  my-2">
-          <Link href={`./products/edit/${product_id}`} className="p-2 w-5 h-6">
+        <MenuItem className="text-orange-500 hover:bg-primary-200  my-1"
+          sx={{
+            border: 2,
+            borderColor: "#f97316",
+            borderRadius: "4px",
+            textAlign:"center"
+          }}
+          onClick={() => {
+            route.push(`./products/edit/${product_id}`);
+          }}>
             Edit
-          </Link>
         </MenuItem>
         <MenuItem
-          className=" hover:bg-neutral-100  my-2"
+          className=" bg-red-500 text-white hover:bg-primary-200 "
+          sx={{
+            border: 2,
+            borderColor: "#ef4444 ",
+            borderRadius: "4px",
+            textAlign:"center",
+            m:0
+          }}
           onClick={() => {
             setProductIdDeleteIdDelete(product_id);
             handleDeleteClick();
