@@ -208,24 +208,6 @@ export default function Products() {
                   </TableRow>
                 ))}
             </TableBody>
-            {/* <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[1, 50]}
-                  component={"div"}
-                  count={products?.length}
-                  page={0}
-                  onPageChange={() => {
-                    console.log("Page changed");
-                  }}
-                  rowsPerPage={0}
-                  onRowsPerPageChange={() => {
-                    console.log("Rows per page changed");
-                  }}
-                  align="left"
-                />
-              </TableRow>
-            </TableFooter> */}
           </Table>
         </TableContainer>
         {/* end content */}
