@@ -32,6 +32,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const checkAuthStatus = async () => {
+      setLoading(true)
       try {
         if (!auth) {
           const accessTokenResponse = await axiosPrivate.get("/auth/refresh");
@@ -43,36 +44,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
             },
             withCredentials: true,
           });
-          // const cartResponse = await axiosPrivate.get<Cart[]>("/carts/", {
-          //   headers: {
-          //     Authorization: "Bearer " + accessToken,
-          //   },
-          //   withCredentials: true,
-          // });
-
-          // const itemCart = cartResponse.data.map((item) => item.items).flat();
-
-          // itemCart.map((item) =>
-          //   dispatch(
-          //     initialCart({
-          //       product_item_id: item.product_item_id,
-          //       qty: item.qty,
-          //       variation_id: item.variation_id,
-          //       product_id: item.product_id,
-          //       cart_item_id: item.cart_item_id
-          //     })
-          //   )
-          // );
-
-          // itemCart.dispatch(
-          //   addCartItem({
-          //     product_item_id: cartResponse?.data?._id,
-          //     qty: cartResponse?.data?._id,
-          //     variation_id: "",
-          //     product: "",
-          //   })
-          // );
-
           dispatch(
             setCredential({
               access_token: accessToken,

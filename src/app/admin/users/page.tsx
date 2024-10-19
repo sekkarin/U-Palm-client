@@ -2,7 +2,6 @@
 import React from "react";
 import {
   Breadcrumbs,
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -29,17 +28,17 @@ export default function ManageUser() {
   const { data, isLoading } = useQuery({
     queryKey: ["user-admin-page"],
     queryFn: async () => await axiosAuth.get("/users"),
-    refetchInterval: 1000 * 60 * 60 * 5,
+    refetchInterval: 1000 * 2,
   });
 
-  if (isLoading) {
-    return <Loading />; // Show a loading state while checking the role
-  }
-
+  
   const handlerViewUser = (user_id: string) => {
     router.push("./users/" + user_id);
   };
-    console.log(data);
+  
+  if (isLoading) {
+    return <Loading />;
+  }
     
   return (
     <Layout>
@@ -59,7 +58,7 @@ export default function ManageUser() {
               <TableCell align="left">Name</TableCell>
               <TableCell align="left">Email</TableCell>
               <TableCell align="left">Role</TableCell>
-              <TableCell align="left">Acton</TableCell>
+              {/* <TableCell align="left">Acton</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -82,7 +81,7 @@ export default function ManageUser() {
                   </TableCell>
                   <TableCell align="left">{row.email}</TableCell>
                   <TableCell align="left">{row.roles}</TableCell>
-                  <TableCell align="left">
+                  {/* <TableCell align="left">
                     <Button
                       size="small"
                       color="warning"
@@ -104,7 +103,7 @@ export default function ManageUser() {
                     >
                       Delete
                     </Button>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
           </TableBody>

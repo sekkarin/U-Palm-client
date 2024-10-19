@@ -29,6 +29,7 @@ const useAxiosAuth = () => {
         if (error?.response?.status === 403 && !prevRequest?.sent) {
           prevRequest.sent = true;
           const newAccessToken = await refresh();
+          console.log("refresh token",new Date(Date.now()));
           if (newAccessToken) {
             dispatch(setCredential(newAccessToken));
             prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
@@ -43,8 +44,8 @@ const useAxiosAuth = () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [accessToken, dispatch, refresh]);
-
+  }, [accessToken, dispatch, refresh]); 
+  
   return axiosPrivate;
 };
 
