@@ -204,38 +204,6 @@ export default function Products() {
                         handleDeleteClick={handleDeleteClick}
                         setProductIdDeleteIdDelete={setProductIdDeleteIdDelete}
                       />
-                      {/* <Dropdown>
-                        <MenuButton className="hover:bg-primary-100 hover:rounded-full ">
-                          <MoreVertIcon />
-                        </MenuButton>
-                        <Menu className="bg-white  text-center p-2">
-                          <MenuItem className=" hover:bg-neutral-100 my-2">
-                            <Link
-                              href={`./products/${row.product_id}`}
-                              className="p-2 w-5 h-6"
-                            >
-                              View
-                            </Link>
-                          </MenuItem>
-                          <MenuItem className=" hover:bg-neutral-100  my-2">
-                            <Link
-                              href={`./products/edit/${row.product_id}`}
-                              className="p-2 w-5 h-6"
-                            >
-                              Edit
-                            </Link>
-                          </MenuItem>
-                          <MenuItem
-                            className=" hover:bg-neutral-100  my-2"
-                            onClick={() => {
-                              setProductIdDeleteIdDelete(row?.product_id);
-                              handleDeleteClick();
-                            }}
-                          >
-                            Delete
-                          </MenuItem>
-                        </Menu>
-                      </Dropdown> */}
                     </TableCell>
                   </TableRow>
                 ))}
