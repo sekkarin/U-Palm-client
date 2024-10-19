@@ -325,7 +325,7 @@ export default function EditSupplier({ params }: { params: { id: string } }) {
 
         <Box mt={4}>
           <Button type="submit" variant="contained" fullWidth>
-            เพิ่ม
+            Update Supplier
           </Button>
         </Box>
       </Box>

@@ -5,7 +5,6 @@ import {
   Alert,
   Box,
   Button,
-  Divider,
   IconButton,
   InputBase,
   Snackbar,
@@ -162,7 +161,6 @@ export default function Suppliers() {
           </Button>
         </Box>
       </Box>
-      <Divider orientation="horizontal" />
       <TableContainer component={Paper} className="mt-2">
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead className="bg-primary-400 ">

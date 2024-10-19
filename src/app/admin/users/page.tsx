@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
 import {
-  Breadcrumbs,
-  Button,
+  Box,
+  IconButton,
+  InputBase,
   Table,
   TableBody,
   TableCell,
@@ -18,7 +19,7 @@ import { Loading } from "@/components/Loading";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import Paper from "@mui/material/Paper";
-import Link from "next/link";
+import SearchIcon from "@mui/icons-material/Search";
 import Layout from "@/components/Admin/Layout";
 import { IUser } from "@/interfaces/user.interface";
 
@@ -29,28 +30,46 @@ export default function ManageUser() {
   const { data, isLoading } = useQuery({
     queryKey: ["user-admin-page"],
     queryFn: async () => await axiosAuth.get("/users"),
-    refetchInterval: 1000 * 60 * 60 * 5,
+    refetchInterval: 1000 * 60 * 5,
   });
-
-  if (isLoading) {
-    return <Loading />; // Show a loading state while checking the role
-  }
 
   const handlerViewUser = (user_id: string) => {
     router.push("./users/" + user_id);
   };
-    console.log(data);
-    
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <Layout>
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link color="inherit" href="/admin/user">
-          User
-        </Link>
-        <Typography color="text.primary">Breadcrumbs</Typography>
-      </Breadcrumbs>
+      <Box display={"flex"} justifyContent={"space-between"} mb={2}>
+        <Box>
+          <Typography variant="h3">User</Typography>
+        </Box>
 
-      <Typography variant="h3">User</Typography>
+        <Box display={"flex"} gap={2}>
+          <Paper
+            component="form"
+            sx={{
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
+              width: 400,
+            }}
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Search user"
+              inputProps={{ "aria-label": "search supplier" }}
+            />
+            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+              <SearchIcon />
+            </IconButton>
+          </Paper>
+        </Box>
+      </Box>
+
       <TableContainer component={Paper} className="mt-2">
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -59,12 +78,12 @@ export default function ManageUser() {
               <TableCell align="left">Name</TableCell>
               <TableCell align="left">Email</TableCell>
               <TableCell align="left">Role</TableCell>
-              <TableCell align="left">Acton</TableCell>
+              {/* <TableCell align="left">Acton</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
             {data &&
-              data?.data?.map((row:IUser) => (
+              data?.data?.map((row: IUser) => (
                 <TableRow
                   key={row.user_id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -82,7 +101,7 @@ export default function ManageUser() {
                   </TableCell>
                   <TableCell align="left">{row.email}</TableCell>
                   <TableCell align="left">{row.roles}</TableCell>
-                  <TableCell align="left">
+                  {/* <TableCell align="left">
                     <Button
                       size="small"
                       color="warning"
@@ -104,7 +123,7 @@ export default function ManageUser() {
                     >
                       Delete
                     </Button>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
           </TableBody>
