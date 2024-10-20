@@ -289,7 +289,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                         className="cursor-pointer"
                       />
                       <Link
-                        href={"#"}
+                        href={`/supplier/${product.supplier_id.supplier_id}`}
                         className="hover:text-blue-500 hover:underline"
                       >
                         {product.supplier_id.name}

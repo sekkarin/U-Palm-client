@@ -98,7 +98,7 @@ export default function Suppliers() {
       } else if (menuItem === "edit") {
         route.push("./suppliers/edit-supplier/" + supplier_id);
       } else if (menuItem === "detail") {
-        route.push("./suppliers/" + supplier_id);
+        route.push("/supplier/" + supplier_id);
       }
     };
   };

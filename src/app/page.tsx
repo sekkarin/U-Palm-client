@@ -2,7 +2,7 @@
 import Image from "next/image";
 import SearchIcon from "@mui/icons-material/Search";
 import { useQuery } from "@tanstack/react-query";
-import { getProducts, getSupplier } from "@/libs/getProducts";
+import { getProducts, getSuppliers } from "@/libs/getProducts";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import dynamic from "next/dynamic";
@@ -33,7 +33,7 @@ export default function Home() {
   });
   const suppliersQuery = useQuery<ISupplier[]>({
     queryKey: ["Suppliers-landing-page"],
-    queryFn: () => getSupplier(),
+    queryFn: () => getSuppliers(),
     refetchInterval: 1000 * 60 * 60 * 5,
   });
 

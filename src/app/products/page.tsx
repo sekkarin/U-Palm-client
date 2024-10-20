@@ -34,9 +34,6 @@ export default function Products() {
   if (productQuery.isLoading) {
     return <Loading />;
   }
-  console.log(productQuery.data);
-  console.log(page);
-  
   return (
     <>
       <Header />
