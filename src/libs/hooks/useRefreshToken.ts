@@ -20,8 +20,6 @@ const useRefreshToken = () => {
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         dispatch(logout());
-        // Cookies.remove("refresh_token");
-        // navigate("/session-expired");
       }
       return null;
     }
