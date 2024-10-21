@@ -16,7 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { IProduct } from "@/interfaces/product.interface";
 import { Loading } from "@/components/Loading";
 import { useRouter } from "next/navigation";
-import { getSupplierAndproducts } from "@/libs/getSupplier";
+import { getSupplierAndProducts } from "@/libs/getSupplier";
 import { ISupplier } from "@/interfaces/supplier.interface";
 import Image from "next/image";
 
@@ -29,14 +29,13 @@ export default function Supplier({ params }: { params: { id: string } }) {
 
   const supplierAndProductsQuery = useQuery<ResponseBody>({
     queryKey: ["supplier", params.id],
-    queryFn: async () => await getSupplierAndproducts(params.id),
+    queryFn: async () => await getSupplierAndProducts(params.id),
     refetchInterval: 1000 * 60 * 60 * 5,
   });
 
   if (supplierAndProductsQuery.isLoading) {
     return <Loading />;
   }
-  console.log(supplierAndProductsQuery.data);
 
   return (
     <Suspense fallback={<Loading />}>
@@ -86,13 +85,15 @@ export default function Supplier({ params }: { params: { id: string } }) {
                   <Typography variant="body1">
                     <b>Contact 2 :</b>{" "}
                     {supplierAndProductsQuery.data.supplier?.contacts_person_2
-                      ? supplierAndProductsQuery.data.supplier?.contacts_person_2.con_person
+                      ? supplierAndProductsQuery.data.supplier
+                          ?.contacts_person_2.con_person
                       : "-"}
                   </Typography>
                   <Typography variant="body1">
                     <b>Contact Email 2 :</b>{" "}
                     {supplierAndProductsQuery.data.supplier?.contacts_person_2
-                      ? supplierAndProductsQuery.data.supplier?.contacts_person_2.email
+                      ? supplierAndProductsQuery.data.supplier
+                          ?.contacts_person_2.email
                       : "-"}
                   </Typography>
                 </Grid>
