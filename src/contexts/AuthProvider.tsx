@@ -52,12 +52,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           );
         }
         setIsAuthenticated(true);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
-        console.log(error);
-
         dispatch(logout());
         setIsAuthenticated(false);
-        router.replace("/", { scroll: false });
       } finally {
         setLoading(false);
       }
