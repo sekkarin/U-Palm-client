@@ -146,7 +146,12 @@ export default function Login() {
                 </FormControl>
               </form>
               <div className="w-[100%] flex justify-end mt-5">
-                <Button className="text-[11.5px] text-primary-500 hover:text-primary-500 transition-all font-semibold">
+                <Button
+                  className="text-[11.5px] text-primary-500 hover:text-primary-500 transition-all font-semibold"
+                  onClick={() => {
+                    router.push("./forget-pwd");
+                  }}
+                >
                   ลืมรหัสผ่าน
                 </Button>
               </div>

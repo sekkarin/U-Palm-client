@@ -11,7 +11,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import React, { Suspense } from "react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { IProduct } from "@/interfaces/product.interface";
 import { Loading } from "@/components/Loading";
@@ -38,7 +38,7 @@ export default function Supplier({ params }: { params: { id: string } }) {
   }
 
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <Header />
       <Container maxWidth={"lg"} className="mt-[110px] min-h-dvh">
         {supplierAndProductsQuery.data && (
@@ -180,6 +180,6 @@ export default function Supplier({ params }: { params: { id: string } }) {
         )}
       </Container>
       <Footer />
-    </Suspense>
+    </>
   );
 }
